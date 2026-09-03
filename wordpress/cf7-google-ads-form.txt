@@ -1,0 +1,110 @@
+=============================================================================
+ARROW TURF - "Google Ads Form" (CF7 id fa9bd4f)
+Paste the FORM block below into the Form tab, replacing what is there now.
+=============================================================================
+
+WHY IT CHANGED FROM YOURS
+-------------------------
+1. No `id:` attributes.
+   This one form is output twice on the page (hero + contact). Duplicate ids
+   mean a <label for="hf-n"> in the contact form focuses the HERO field, so
+   clicking a label scrolls the user back up the page. Wrapping each control
+   inside its own <label> associates them implicitly and needs no ids, so the
+   form is safe to reuse.
+
+2. The submit is wrapped in <div class="cf7-submit">.
+   CF7 renders the submit as an <input>, and an <input> renders no ::before
+   and cannot contain the arrow span. Left with class:btn class:btn-primary
+   it would inherit that style's WHITE background and WHITE text and the
+   label would be invisible. The wrapper is the button instead: it carries
+   the fill, the glow, the hover retract and the arrow.
+
+3. Dropped the <p class="hf-note"> line.
+   The template already prints that note under the form from the ACF field,
+   so leaving it here shows it twice.
+
+4. Added the fields the design has: suburb is now required, plus approx.
+   area, turf variety and what they need.
+
+
+FORM
+----
+
+<div class="f2">
+  <div class="frow">
+    <label>Your name <span class="req">*</span>
+      [text* your-name autocomplete:name]
+    </label>
+  </div>
+  <div class="frow">
+    <label>Phone <span class="req">*</span>
+      [tel* your-phone autocomplete:tel]
+    </label>
+  </div>
+</div>
+
+<div class="f2">
+  <div class="frow">
+    <label>Email <span class="req">*</span>
+      [email* your-email autocomplete:email]
+    </label>
+  </div>
+  <div class="frow">
+    <label>Suburb <span class="req">*</span>
+      [text* your-suburb autocomplete:address-level2]
+    </label>
+  </div>
+</div>
+
+<div class="f2">
+  <div class="frow">
+    <label>Approx. area (m&sup2;)
+      [text your-area placeholder "e.g. 120"]
+    </label>
+  </div>
+  <div class="frow">
+    <label>Turf variety
+      [select your-variety "Not sure, please advise" "Sir Walter Soft Leaf Buffalo" "Matilda Soft Leaf Buffalo" "Kikuyu" "Wintergreen Couch" "Greenlees Park Couch"]
+    </label>
+  </div>
+</div>
+
+<div class="frow">
+  <label>What do you need?
+    [select your-service "Select an option" "Turf supplied &amp; installed" "Turf delivered (supply only)" "Pick up from the farm" "Maxi roll turf" "Not sure, please advise"]
+  </label>
+</div>
+
+<div class="frow">
+  <label>Your project
+    [textarea your-message placeholder "Anything else we should know about access, timing or site condition?"]
+  </label>
+</div>
+
+<div class="cf7-submit">
+  [submit "BOOK YOUR CONSULTATION HERE"]
+  <span class="btn-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+</div>
+
+
+MAIL TAB
+--------
+Four new fields need adding to the Mail tab or the enquiry arrives without
+them. Add to the message body:
+
+  Name:     [your-name]
+  Phone:    [your-phone]
+  Email:    [your-email]
+  Suburb:   [your-suburb]
+  Area:     [your-area] m2
+  Variety:  [your-variety]
+  Needs:    [your-service]
+
+  Message:
+  [your-message]
+
+
+MESSAGES TAB
+------------
+Nothing to change. The success and error output is already styled by the
+template's CF7 compatibility block.

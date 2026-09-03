@@ -2,10 +2,13 @@
 /**
  * Template Name: Arrow Turf Landing Page
  *
- * Standalone landing page for Google Ads traffic. Deliberately renders no
- * site header, navigation or footer so paid traffic has only two actions:
- * submit the form or call the farm. wp_head() and wp_footer() still fire, so
- * GTM, Contact Form 7 and anything else hooked in keeps working.
+ * Landing page for Google Ads traffic. Renders inside the site header and
+ * footer via get_header() / get_footer(), so navigation, GTM, Contact Form 7
+ * and anything else the theme hooks in all behave as they do site-wide.
+ *
+ * The page CSS is printed into <head> from a wp_head hook registered at the
+ * top of this file, because get_header() is what fires wp_head, and the
+ * template executes before that call.
  *
  * Every field falls back to the copy in inc/arrow-turf-lp-content.php, so the
  * page renders correctly before the seeder has run.
@@ -82,18 +85,26 @@ $atf_crows = atf_lp_rows( 'contact_rows', $atf_con['rows'] );
 $atf_tel  = 'tel:' . preg_replace( '/[^0-9+]/', '', $atf_phone );
 $atf_icon = 'atf_lp_icon';
 
-?><!DOCTYPE html>
-<html <?php language_attributes(); ?>>
-<head>
-<meta charset="<?php bloginfo( 'charset' ); ?>">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<?php wp_head(); ?>
-<style>
+/* -----------------------------------------------------------------------
+ * The page renders inside the site header and footer, so two things have
+ * to be registered before get_header() runs: get_header() is what fires
+ * both wp_head and body_class, and the template file executes before it.
+ * -------------------------------------------------------------------- */
+
+add_filter( 'body_class', function ( $classes ) {
+	$classes[] = 'atf-lp';
+	return $classes;
+} );
+
+add_action( 'wp_head', function () {
+	?>
+<style id="atf-lp-styles">
+
 /* ============================================================
    ARROW TURF GOOGLE ADS LANDING PAGE
-   Standalone file. No header / no footer by design.
-   Images point at the live WordPress URLs. Swap the paths
-   in the IMAGE MAP comment below once assets are uploaded.
+   Printed into <head> from the wp_head hook registered in the
+   template, so it lands after the theme's stylesheets and wins
+   the cascade without a flash of unstyled content.
    ============================================================ */
 
 :root{
@@ -118,24 +129,30 @@ $atf_icon = 'atf_lp_icon';
 /* Desktop / laptop caps at 1440px, larger screens open up to 1880px */
 @media (min-width:1700px){ :root{ --wrap:1880px; } }
 
-*,*::before,*::after{ box-sizing:border-box; }
+.atf-lp-page, .atf-lp-page *, .atf-lp-page *::before, .atf-lp-page *::after{ box-sizing:border-box; }
 
 html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
 
+/* Typography lives on .atf-lp-page, not body, so the theme's header and
+   footer keep their own type. Only the page background is global. */
 body{
-  margin:0;
   background:var(--paper);
+  -webkit-font-smoothing:antialiased;
+}
+.atf-lp-page{
   color:var(--ink);
   font-family:var(--body);
   font-size:18.7px;
   line-height:1.65;
-  -webkit-font-smoothing:antialiased;
 }
 
-img{ max-width:100%; display:block; }
-a{ color:inherit; }
+.atf-lp-page img{ max-width:100%; display:block; }
+.atf-lp-page a{ color:inherit; }
 
-h1,h2,h3,h4{
+.atf-lp-page h1,
+.atf-lp-page h2,
+.atf-lp-page h3,
+.atf-lp-page h4{
   font-family:var(--display);
   overflow-wrap:break-word;
   font-weight:800;
@@ -143,15 +160,15 @@ h1,h2,h3,h4{
   letter-spacing:-.025em;
   margin:0;
 }
-h2{ font-size:clamp(1.925rem,3.52vw,2.97rem); }
-h3{ font-size:1.265rem; font-weight:600; letter-spacing:-.01em; line-height:1.25; }
-p{ margin:0 0 1rem; }
-p:last-child{ margin-bottom:0; }
+.atf-lp-page h2{ font-size:clamp(1.925rem,3.52vw,2.97rem); }
+.atf-lp-page h3{ font-size:1.265rem; font-weight:600; letter-spacing:-.01em; line-height:1.25; }
+.atf-lp-page p{ margin:0 0 1rem; }
+.atf-lp-page p:last-child{ margin-bottom:0; }
 
 .wrap{ max-width:var(--wrap); margin:0 auto; padding:0 24px; }
 @media (max-width:640px){ .wrap{ padding:0 20px; } }
 
-section{ padding:clamp(3rem,5.5vw,5rem) 0; }
+.atf-lp-page section{ padding:clamp(3rem,5.5vw,5rem) 0; }
 
 .eyebrow{
   font-family:var(--mono);
@@ -645,6 +662,85 @@ form.sent{ display:none; }
     0 18px 38px -14px rgba(27,68,40,.95);
 }
 
+/* ---------- CF7: label wrapping its own control ----------
+   The same form is output twice on this page (hero + contact), so the
+   fields cannot carry id: attributes; duplicate ids would make a label
+   in the contact form focus the hero field. Wrapping the control inside
+   its <label> associates them implicitly, with no ids at all. */
+.lead-card .frow label,
+.form-card .frow label{ margin-bottom:0; font-weight:600; }
+.lead-card .frow label .wpcf7-form-control-wrap,
+.form-card .frow label .wpcf7-form-control-wrap{ display:block; margin-top:.35rem; font-weight:400; }
+
+/* ---------- CF7 submit ----------
+   CF7 renders the submit as an <input>, and an <input> renders no
+   ::before and can hold no arrow span. Left to itself it would inherit
+   .btn-primary's white background AND white text, so the label would
+   vanish. The wrapper becomes the button instead: it carries the fill,
+   the glow, the retract and the arrow, and the input sits inside as
+   nothing but the label text. */
+.cf7-submit{
+  position:relative; isolation:isolate; overflow:hidden;
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  width:100%; margin-top:.4rem;
+  padding:9.5px 9.5px 9.5px 33.5px;
+  border-radius:var(--r);
+  background:#fff;
+  cursor:pointer;
+  box-shadow:
+    0 0 18px -3px rgba(90,174,110,.58),
+    0 0 38px -6px rgba(44,110,63,.44),
+    0 12px 30px -14px rgba(27,68,40,.85);
+  animation:atfGlow 4.2s ease-in-out infinite;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.cf7-submit::before{
+  content:""; position:absolute; z-index:-1; top:0; right:0; bottom:0; left:0;
+  background:var(--brand); border-radius:var(--r);
+  transition:left .5s cubic-bezier(.65,.05,.25,1), top .5s cubic-bezier(.65,.05,.25,1),
+             right .5s cubic-bezier(.65,.05,.25,1), bottom .5s cubic-bezier(.65,.05,.25,1),
+             border-radius .5s cubic-bezier(.65,.05,.25,1);
+}
+.cf7-submit:hover,
+.cf7-submit:focus-within{
+  transform:translateY(-2px); animation:none;
+  box-shadow:
+    0 0 26px -2px rgba(122,199,140,.75),
+    0 0 56px -4px rgba(44,110,63,.60),
+    0 18px 38px -14px rgba(27,68,40,.95);
+}
+.cf7-submit:hover::before,
+.cf7-submit:focus-within::before{
+  left:calc(100% - 55.5px); top:9.5px; right:9.5px; bottom:9.5px; border-radius:50%;
+}
+.lead-card .cf7-submit input.wpcf7-submit,
+.form-card .cf7-submit input.wpcf7-submit{
+  flex:0 1 auto; width:auto;
+  background:none; border:0; padding:0; margin:0;
+  box-shadow:none; animation:none;
+  font-family:var(--body); font-size:1.166rem; font-weight:700;
+  letter-spacing:.01em; line-height:1.2;
+  color:#fff; text-align:left; cursor:pointer;
+  transition:color .35s ease;
+}
+.lead-card .cf7-submit:hover input.wpcf7-submit,
+.form-card .cf7-submit:hover input.wpcf7-submit{
+  color:var(--brand); background:none; transform:none;
+}
+.cf7-submit:hover .btn-arrow svg{ transform:translateX(2px); }
+.lead-card .cf7-submit .wpcf7-spinner,
+.form-card .cf7-submit .wpcf7-spinner{
+  position:absolute; right:64px; top:50%; transform:translateY(-50%); margin:0;
+}
+@media (max-width:560px){
+  .cf7-submit{ padding:8.5px 8.5px 8.5px 23.5px; }
+  .cf7-submit:hover::before,
+  .cf7-submit:focus-within::before{ left:calc(100% - 48.5px); top:8.5px; right:8.5px; bottom:8.5px; }
+  .lead-card .cf7-submit input.wpcf7-submit,
+  .form-card .cf7-submit input.wpcf7-submit{ font-size:1.012rem; }
+  .cf7-submit .btn-arrow{ width:40px; height:40px; }
+}
+
 /* ============================================================
    THEME RESET
 
@@ -662,35 +758,43 @@ form.sent{ display:none; }
 html:has(body.atf-lp){ font-size:100%; }
 
 /* .custom-background outranks a bare body selector */
-body.atf-lp{ background:var(--paper); color:var(--ink); font-family:var(--body); font-size:18.7px; line-height:1.65; }
+body.atf-lp{ background:var(--paper); }
 
 /* the child theme's `body h1` outranks a bare `h1`, so match its weight */
-body.atf-lp h1, body.atf-lp h2, body.atf-lp h3, body.atf-lp h4{ font-family:var(--display); }
-body.atf-lp a, body.atf-lp p, body.atf-lp li, body.atf-lp label,
-body.atf-lp input, body.atf-lp select, body.atf-lp textarea, body.atf-lp button{ font-family:var(--body); }
-body.atf-lp .eyebrow, body.atf-lp .sub, body.atf-lp .crow-k,
-body.atf-lp .v-tag, body.atf-lp .v-link, body.atf-lp .review .src,
-body.atf-lp .lc-top .sub{ font-family:var(--mono); }
+.atf-lp-page h1, .atf-lp-page h2, .atf-lp-page h3, .atf-lp-page h4{ font-family:var(--display); }
+.atf-lp-page a, .atf-lp-page p, .atf-lp-page li, .atf-lp-page label,
+.atf-lp-page input, .atf-lp-page select, .atf-lp-page textarea, .atf-lp-page button{ font-family:var(--body); }
+.atf-lp-page .eyebrow, .atf-lp-page .sub, .atf-lp-page .crow-k,
+.atf-lp-page .v-tag, .atf-lp-page .v-link, .atf-lp-page .review .src,
+.atf-lp-page .lc-top .sub{ font-family:var(--mono); }
 
 /* zero-specificity defaults: they beat the theme, and lose to everything of ours */
-:where(body.atf-lp) h1, :where(body.atf-lp) h2,
-:where(body.atf-lp) h3, :where(body.atf-lp) h4{ color:var(--ink); margin:0; }
-:where(body.atf-lp) p{ color:inherit; font-size:inherit; line-height:inherit; margin:0 0 1rem; }
-:where(body.atf-lp) ul, :where(body.atf-lp) ol{ margin:0; padding:0; list-style:none; }
-:where(body.atf-lp) li{ font-size:inherit; line-height:inherit; color:inherit; }
-:where(body.atf-lp) a{ color:inherit; text-decoration:none; }
-:where(body.atf-lp) figure{ margin:0; }
-:where(body.atf-lp) img{ height:auto; }
+:where(.atf-lp-page) h1, :where(.atf-lp-page) h2,
+:where(.atf-lp-page) h3, :where(.atf-lp-page) h4{ color:var(--ink); margin:0; }
+:where(.atf-lp-page) p{ color:inherit; font-size:inherit; line-height:inherit; margin:0 0 1rem; }
+:where(.atf-lp-page) ul, :where(.atf-lp-page) ol{ margin:0; padding:0; list-style:none; }
+:where(.atf-lp-page) li{ font-size:inherit; line-height:inherit; color:inherit; }
+:where(.atf-lp-page) a{ color:inherit; text-decoration:none; }
+:where(.atf-lp-page) figure{ margin:0; }
+:where(.atf-lp-page) img{ height:auto; }
 
-/* the theme wraps content in these; the LP lays itself out */
-body.atf-lp #page, body.atf-lp .site-content, body.atf-lp .corp-container{
+/* The theme may wrap page content in #content > .corp-container, which is
+   width-limited. Our sections run full bleed and handle their own gutters.
+   Scoped to #content so the header and footer keep their own containers. */
+body.atf-lp #content,
+body.atf-lp #content > .corp-container,
+body.atf-lp #content .site-content{
   max-width:none; width:auto; margin:0; padding:0;
 }
 </style>
-</head>
+	<?php
+}, 99 );
 
-<body <?php body_class( 'atf-lp' ); ?>>
-<?php wp_body_open(); ?>
+get_header();
+?>
+
+<div class="atf-lp-page">
+
 
 <!-- ============================ HERO ============================ -->
 <header class="hero">
@@ -1082,6 +1186,6 @@ body.atf-lp #page, body.atf-lp .site-content, body.atf-lp .corp-container{
 })();
 </script>
 
-<?php wp_footer(); ?>
-</body>
-</html>
+</div><!-- .atf-lp-page -->
+
+<?php get_footer(); ?>
