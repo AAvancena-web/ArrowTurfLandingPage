@@ -31,7 +31,6 @@
   --line:#DCE3D8;
   --line-soft:#E9EEE5;
   --tint:#E7F0E6;
-  --grad:linear-gradient(100deg,#5AAE6E 0%,#2C6E3F 48%,#1B4428 100%);
   --display:"Bricolage Grotesque", system-ui, sans-serif;
   --body:"Instrument Sans", system-ui, sans-serif;
   --mono:"IBM Plex Mono", ui-monospace, monospace;
@@ -100,7 +99,7 @@ section{ padding:clamp(3rem,5.5vw,5rem) 0; }
   font-family:var(--body); font-size:1.1rem; font-weight:700;
   letter-spacing:.01em; line-height:1.2;
   padding:1.05rem 1.9rem;
-  border-radius:999px;
+  border-radius:var(--r);
   border:1.5px solid transparent;
   transition:transform .25s ease, box-shadow .25s ease, color .35s ease, background .25s ease;
 }
@@ -124,7 +123,8 @@ section{ padding:clamp(3rem,5.5vw,5rem) 0; }
   position:relative; isolation:isolate; overflow:hidden;
   justify-content:space-between;
   background:#fff; color:#fff;
-  padding:8px 8px 8px 32px;
+  border:0;
+  padding:9.5px 9.5px 9.5px 33.5px;
   box-shadow:
     0 0 18px -3px rgba(90,174,110,.58),
     0 0 38px -6px rgba(44,110,63,.44),
@@ -143,9 +143,10 @@ section{ padding:clamp(3rem,5.5vw,5rem) 0; }
 }
 .btn-primary::before{
   content:""; position:absolute; z-index:-1; top:0; right:0; bottom:0; left:0;
-  background:var(--grad); border-radius:999px;
+  background:var(--brand); border-radius:var(--r);
   transition:left .5s cubic-bezier(.65,.05,.25,1), top .5s cubic-bezier(.65,.05,.25,1),
-             right .5s cubic-bezier(.65,.05,.25,1), bottom .5s cubic-bezier(.65,.05,.25,1);
+             right .5s cubic-bezier(.65,.05,.25,1), bottom .5s cubic-bezier(.65,.05,.25,1),
+             border-radius .5s cubic-bezier(.65,.05,.25,1);
 }
 .btn-primary:hover,
 .btn-primary:focus-visible{
@@ -157,7 +158,7 @@ section{ padding:clamp(3rem,5.5vw,5rem) 0; }
 }
 .btn-primary:hover::before,
 .btn-primary:focus-visible::before{
-  left:calc(100% - 54px); top:8px; right:8px; bottom:8px;
+  left:calc(100% - 55.5px); top:9.5px; right:9.5px; bottom:9.5px; border-radius:50%;
 }
 
 .btn-arrow{
@@ -175,9 +176,9 @@ section{ padding:clamp(3rem,5.5vw,5rem) 0; }
 @media (max-width:560px){
   .btn{ font-size:1.012rem; gap:10px; }
   .btn-lg:not(.btn-primary){ padding:1rem 1.2rem; }
-  .btn-primary{ padding:7px 7px 7px 22px; }
+  .btn-primary{ padding:8.5px 8.5px 8.5px 23.5px; }
   .btn-primary:hover::before,
-  .btn-primary:focus-visible::before{ left:calc(100% - 47px); top:7px; right:7px; bottom:7px; }
+  .btn-primary:focus-visible::before{ left:calc(100% - 48.5px); top:8.5px; right:8.5px; bottom:8.5px; border-radius:50%; }
   .btn-arrow{ width:40px; height:40px; }
 }
 

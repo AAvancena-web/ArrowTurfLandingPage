@@ -27,12 +27,13 @@ the two conversion actions: **submit the form** or **call the farm**.
 - Primary CTA text is `BOOK YOUR CONSULTATION HERE` throughout, in the brand green.
 - CTA treatment is ported from the DM-Tradie repo (`AAvancena-web/DM-Tradie`,
   `.btn--primary`), recoloured to the Arrow Turf green:
-  - **Rest:** the gradient (`--grad`) fills the pill and `@keyframes atfGlow`
-    swells the coloured glow once per 4.2s cycle, a slow beacon rather than a
-    constant breathe.
-  - **Hover:** the gradient `::before` retracts into the arrow circle at the
-    right, revealing the white pill underneath, the label turns green, the
-    button lifts 2px and the arrow nudges right.
+  - **Rest:** solid `--brand` green on the standard `--r` (10px) corners, with
+    `@keyframes atfGlow` swelling the glow once per 4.2s cycle, a slow beacon
+    rather than a constant breathe.
+  - **Hover:** the green `::before` retracts into the arrow at the right,
+    rounding from 10px to a circle as it goes, revealing the white button
+    underneath. The label turns green, the button lifts 2px and the arrow
+    nudges right.
   - Suppressed under `prefers-reduced-motion`.
 - Every CTA either scrolls to a form (`#lead-form` / `#contact`) or dials `tel:0490779707`.
 - Base font size is 18.7px; every `font-size` in the stylesheet is set from that same 110% scale.
