@@ -19,11 +19,16 @@ WHY IT CHANGED FROM YOURS
    label would be invisible. The wrapper is the button instead: it carries
    the fill, the glow, the hover retract and the arrow.
 
-3. Dropped the <p class="hf-note"> line.
+3. The submit and its arrow are on ONE line, with no line break between
+   them. CF7 runs the form content through autop, and a newline there
+   becomes a <br> that stacks the arrow under the label. The CSS also
+   hides <br> inside the form, so both halves of the fix are in place.
+
+4. Dropped the <p class="hf-note"> line.
    The template already prints that note under the form from the ACF field,
    so leaving it here shows it twice.
 
-4. Added the fields the design has: suburb is now required, plus approx.
+5. Added the fields the design has: suburb is now required, plus approx.
    area, turf variety and what they need.
 
 
@@ -81,10 +86,7 @@ FORM
   </label>
 </div>
 
-<div class="cf7-submit">
-  [submit "BOOK YOUR CONSULTATION HERE"]
-  <span class="btn-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
-</div>
+<div class="cf7-submit">[submit "BOOK YOUR CONSULTATION HERE"]<span class="btn-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></div>
 
 
 MAIL TAB

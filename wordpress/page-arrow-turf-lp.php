@@ -236,8 +236,11 @@ body{
     0 14px 34px -12px rgba(27,68,40,.92); }
 }
 .btn-primary::before{
-  content:""; position:absolute; z-index:-1; top:0; right:0; bottom:0; left:0;
-  background:var(--brand); border-radius:var(--r);
+  content:""; position:absolute; z-index:-1;
+  /* overshoot so the button's own overflow:hidden defines the edge; matching
+     the two rounded rects exactly leaves an antialiased white fringe */
+  top:-2px; right:-2px; bottom:-2px; left:-2px;
+  background:var(--brand); border-radius:calc(var(--r) + 2px);
   transition:left .5s cubic-bezier(.65,.05,.25,1), top .5s cubic-bezier(.65,.05,.25,1),
              right .5s cubic-bezier(.65,.05,.25,1), bottom .5s cubic-bezier(.65,.05,.25,1),
              border-radius .5s cubic-bezier(.65,.05,.25,1);
@@ -252,7 +255,11 @@ body{
 }
 .btn-primary:hover::before,
 .btn-primary:focus-visible::before{
-  left:calc(100% - 55.5px); top:9.5px; right:9.5px; bottom:9.5px; border-radius:50%;
+  /* 46px square centred on the arrow, whatever height the button ends up:
+     deriving it from the padding made it an ellipse as soon as the label wrapped */
+  left:calc(100% - 55.5px); right:9.5px;
+  top:calc(50% - 23px); bottom:calc(50% - 23px);
+  border-radius:50%;
 }
 
 .btn-arrow{
@@ -272,7 +279,11 @@ body{
   .btn-lg:not(.btn-primary){ padding:1rem 1.2rem; }
   .btn-primary{ padding:8.5px 8.5px 8.5px 23.5px; }
   .btn-primary:hover::before,
-  .btn-primary:focus-visible::before{ left:calc(100% - 48.5px); top:8.5px; right:8.5px; bottom:8.5px; border-radius:50%; }
+  .btn-primary:focus-visible::before{
+    left:calc(100% - 48.5px); right:8.5px;
+    top:calc(50% - 20px); bottom:calc(50% - 20px);
+    border-radius:50%;
+  }
   .btn-arrow{ width:40px; height:40px; }
 }
 
@@ -518,8 +529,9 @@ form.sent{ display:none; }
 @media (max-width:900px){ .split{ grid-template-columns:1fr; } }
 .split-img{ border-radius:14px; overflow:hidden; background:var(--tint); }
 .split-img img{ width:100%; height:clamp(320px,42vw,540px); object-fit:cover; }
-.why-list{ list-style:none; margin:1.8rem 0 0; padding:0; display:grid; gap:1.2rem; }
-.why-list li{ display:flex; gap:1rem; align-items:flex-start; }
+.why-list{ list-style:none; margin:1.8rem 0 0; padding:0; display:grid; gap:1.2rem; justify-items:stretch; }
+.why-list li{ display:flex; gap:1rem; align-items:flex-start; justify-content:flex-start; width:100%; text-align:left; }
+.why-list li > div{ flex:1 1 auto; min-width:0; text-align:left; }
 .why-ico{
   flex:none; width:44px; height:44px; border-radius:50%;
   background:var(--tint); color:var(--brand);
@@ -625,8 +637,11 @@ form.sent{ display:none; }
 .form-card .frow p,
 .lead-card .wpcf7-form > p,
 .form-card .wpcf7-form > p{ margin:0; }
-.lead-card .frow br,
-.form-card .frow br{ display:none; }
+/* CF7 runs the form content through autop, which drops a <br> after every
+   row and, fatally, between the submit and its arrow span, stacking them. */
+.lead-card .wpcf7-form br,
+.form-card .wpcf7-form br{ display:none; }
+.cf7-submit p{ display:contents; margin:0; }
 .lead-card .wpcf7-form-control-wrap,
 .form-card .wpcf7-form-control-wrap{ display:block; }
 .lead-card .wpcf7-not-valid-tip,
@@ -695,8 +710,9 @@ form.sent{ display:none; }
   transition:transform .25s ease, box-shadow .25s ease;
 }
 .cf7-submit::before{
-  content:""; position:absolute; z-index:-1; top:0; right:0; bottom:0; left:0;
-  background:var(--brand); border-radius:var(--r);
+  content:""; position:absolute; z-index:-1;
+  top:-2px; right:-2px; bottom:-2px; left:-2px;
+  background:var(--brand); border-radius:calc(var(--r) + 2px);
   transition:left .5s cubic-bezier(.65,.05,.25,1), top .5s cubic-bezier(.65,.05,.25,1),
              right .5s cubic-bezier(.65,.05,.25,1), bottom .5s cubic-bezier(.65,.05,.25,1),
              border-radius .5s cubic-bezier(.65,.05,.25,1);
@@ -711,7 +727,11 @@ form.sent{ display:none; }
 }
 .cf7-submit:hover::before,
 .cf7-submit:focus-within::before{
-  left:calc(100% - 55.5px); top:9.5px; right:9.5px; bottom:9.5px; border-radius:50%;
+  /* 46px square centred on the arrow, whatever height the button ends up:
+     deriving it from the padding made it an ellipse as soon as the label wrapped */
+  left:calc(100% - 55.5px); right:9.5px;
+  top:calc(50% - 23px); bottom:calc(50% - 23px);
+  border-radius:50%;
 }
 .lead-card .cf7-submit input.wpcf7-submit,
 .form-card .cf7-submit input.wpcf7-submit{
@@ -735,7 +755,10 @@ form.sent{ display:none; }
 @media (max-width:560px){
   .cf7-submit{ padding:8.5px 8.5px 8.5px 23.5px; }
   .cf7-submit:hover::before,
-  .cf7-submit:focus-within::before{ left:calc(100% - 48.5px); top:8.5px; right:8.5px; bottom:8.5px; }
+  .cf7-submit:focus-within::before{
+    left:calc(100% - 48.5px); right:8.5px;
+    top:calc(50% - 20px); bottom:calc(50% - 20px);
+  }
   .lead-card .cf7-submit input.wpcf7-submit,
   .form-card .cf7-submit input.wpcf7-submit{ font-size:1.012rem; }
   .cf7-submit .btn-arrow{ width:40px; height:40px; }
