@@ -13,9 +13,9 @@
 
 <style>
 /* ============================================================
-   ARROW TURF — GOOGLE ADS LANDING PAGE
+   ARROW TURF GOOGLE ADS LANDING PAGE
    Standalone file. No header / no footer by design.
-   Images point at the live WordPress URLs — swap the paths
+   Images point at the live WordPress URLs. Swap the paths
    in the IMAGE MAP comment below once assets are uploaded.
    ============================================================ */
 
@@ -31,6 +31,7 @@
   --line:#DCE3D8;
   --line-soft:#E9EEE5;
   --tint:#E7F0E6;
+  --grad:linear-gradient(100deg,#5AAE6E 0%,#2C6E3F 48%,#1B4428 100%);
   --display:"Bricolage Grotesque", system-ui, sans-serif;
   --body:"Instrument Sans", system-ui, sans-serif;
   --mono:"IBM Plex Mono", ui-monospace, monospace;
@@ -94,83 +95,94 @@ section{ padding:clamp(3rem,5.5vw,5rem) 0; }
 
 /* ---------- Buttons ---------- */
 .btn{
-  display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
+  display:inline-flex; align-items:center; justify-content:center; gap:14px;
   cursor:pointer; text-decoration:none; text-align:center;
   font-family:var(--body); font-size:1.1rem; font-weight:700;
-  letter-spacing:.01em; line-height:1.15;
+  letter-spacing:.01em; line-height:1.2;
   padding:1.05rem 1.9rem;
-  border-radius:var(--r);
-  border:2px solid transparent;
-  transition:background .16s ease, color .16s ease, transform .14s ease, box-shadow .16s ease;
+  border-radius:999px;
+  border:1.5px solid transparent;
+  transition:transform .25s ease, box-shadow .25s ease, color .35s ease, background .25s ease;
 }
 .btn:active{ transform:translateY(1px); }
 .btn svg{ flex:none; width:20px; height:20px; }
 
-.btn-primary{ background:var(--brand); color:#fff; box-shadow:0 10px 26px rgba(27,68,40,.24); }
-.btn-primary:hover{ background:var(--brand-deep); box-shadow:0 16px 34px rgba(27,68,40,.32); transform:translateY(-2px); }
-
-
 .btn-light{ background:#fff; color:var(--ink); border-color:#fff; }
-.btn-light:hover{ background:var(--tint); border-color:var(--tint); }
+.btn-light:hover{ background:var(--tint); border-color:var(--tint); transform:translateY(-2px); }
 
 .btn-ghost{ background:transparent; color:var(--ink); border-color:var(--ink); }
 .btn-ghost:hover{ background:var(--ink); color:#fff; }
 
-/* ---------- CTA flash: a shine sweeps across, then pauses ---------- */
-.btn-primary,
-.btn-light,
-.callbar a{
-  position:relative;
-  overflow:hidden;
-  isolation:isolate;
+/* ============================================================
+   PRIMARY CTA
+   Rest: the gradient fills the pill and the glow swells once per
+   cycle, a slow beacon rather than a constant breathe.
+   Hover: the gradient retracts into the arrow circle, revealing
+   the white pill underneath, and the label turns green.
+   ============================================================ */
+.btn-primary{
+  position:relative; isolation:isolate; overflow:hidden;
+  justify-content:space-between;
+  background:#fff; color:#fff;
+  padding:8px 8px 8px 32px;
+  box-shadow:
+    0 0 18px -3px rgba(90,174,110,.58),
+    0 0 38px -6px rgba(44,110,63,.44),
+    0 12px 30px -14px rgba(27,68,40,.85);
+  animation:atfGlow 4.2s ease-in-out infinite;
 }
-.btn-primary::after,
-.btn-light::after,
-.callbar a::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:-1;
-  background:linear-gradient(105deg,
-              rgba(255,255,255,0) 42%,
-              rgba(255,255,255,.6) 50%,
-              rgba(255,255,255,0) 58%);
-  transform:translateX(-130%);
-  animation:atf-shine 3.2s ease-in-out infinite;
-  pointer-events:none;
+@keyframes atfGlow{
+  0%,58%,100%{ box-shadow:
+    0 0 13px -4px rgba(90,174,110,.42),
+    0 0 28px -9px rgba(44,110,63,.30),
+    0 12px 30px -14px rgba(27,68,40,.82); }
+  79%        { box-shadow:
+    0 0 26px -1px rgba(122,199,140,.82),
+    0 0 62px -3px rgba(44,110,63,.62),
+    0 14px 34px -12px rgba(27,68,40,.92); }
 }
-/* the white button needs a darker sweep to be visible */
-.btn-light::after{
-  background:linear-gradient(105deg,
-              rgba(22,48,31,0) 42%,
-              rgba(22,48,31,.12) 50%,
-              rgba(22,48,31,0) 58%);
+.btn-primary::before{
+  content:""; position:absolute; z-index:-1; top:0; right:0; bottom:0; left:0;
+  background:var(--grad); border-radius:999px;
+  transition:left .5s cubic-bezier(.65,.05,.25,1), top .5s cubic-bezier(.65,.05,.25,1),
+             right .5s cubic-bezier(.65,.05,.25,1), bottom .5s cubic-bezier(.65,.05,.25,1);
 }
-@keyframes atf-shine{
-  0%   { transform:translateX(-130%); }
-  26%,
-  100% { transform:translateX(130%); }
+.btn-primary:hover,
+.btn-primary:focus-visible{
+  color:var(--brand); transform:translateY(-2px); animation:none;
+  box-shadow:
+    0 0 26px -2px rgba(122,199,140,.75),
+    0 0 56px -4px rgba(44,110,63,.60),
+    0 18px 38px -14px rgba(27,68,40,.95);
+}
+.btn-primary:hover::before,
+.btn-primary:focus-visible::before{
+  left:calc(100% - 54px); top:8px; right:8px; bottom:8px;
 }
 
-/* Soft glow pulse, primary CTAs only. Delete this block to keep the shine alone. */
-.btn-primary{ animation:atf-pulse 3.2s ease-in-out infinite; }
-@keyframes atf-pulse{
-  0%,100%{ box-shadow:0 10px 26px rgba(27,68,40,.24), 0 0 0 0 rgba(44,110,63,.5); }
-  50%    { box-shadow:0 10px 26px rgba(27,68,40,.28), 0 0 0 14px rgba(44,110,63,0); }
+.btn-arrow{
+  width:46px; height:46px; border-radius:50%; flex:none;
+  display:grid; place-items:center; color:#fff;
 }
-.btn-primary:hover{ animation:none; }
+.btn-arrow svg{ width:18px; height:18px; transition:transform .4s cubic-bezier(.65,.05,.25,1); }
+.btn-primary:hover .btn-arrow svg{ transform:translateX(2px); }
 
 .btn-block{ width:100%; }
-.btn-lg{ font-size:1.166rem; padding:1.2rem 2.1rem; }
+.btn-lg{ font-size:1.166rem; }
+.btn-lg:not(.btn-primary){ padding:1.2rem 2.1rem; }
 
 /* Long CTA copy needs room to breathe on narrow screens */
 @media (max-width:560px){
-  .btn{ font-size:1.045rem; padding:1rem 1.1rem; }
-  .btn-lg{ font-size:1.078rem; padding:1.1rem 1.2rem; }
+  .btn{ font-size:1.012rem; gap:10px; }
+  .btn-lg:not(.btn-primary){ padding:1rem 1.2rem; }
+  .btn-primary{ padding:7px 7px 7px 22px; }
+  .btn-primary:hover::before,
+  .btn-primary:focus-visible::before{ left:calc(100% - 47px); top:7px; right:7px; bottom:7px; }
+  .btn-arrow{ width:40px; height:40px; }
 }
 
 /* ============================================================
-   HERO  — copy + CTA left, lead form right
+   HERO: copy + CTA left, lead form right
    ============================================================ */
 .hero{ position:relative; overflow:hidden; background:var(--brand-deep); }
 .hero-bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
@@ -206,7 +218,6 @@ section{ padding:clamp(3rem,5.5vw,5rem) 0; }
 
 .hero-cta{ display:flex; flex-wrap:wrap; gap:.8rem; margin-top:2rem; }
 .hero-cta .btn{ min-width:250px; }
-.hero-cta .btn-primary{ border-color:rgba(255,255,255,.35); }
 @media (max-width:560px){
   .hero-cta{ flex-direction:column; }
   .hero-cta .btn{ min-width:0; width:100%; }
@@ -512,7 +523,7 @@ form.sent{ display:none; }
 <body>
 
 <!-- ============================================================
-     IMAGE MAP — replace these URLs once assets are in the repo
+     IMAGE MAP: replace these URLs once assets are in the repo
      hero ......... /wp-content/uploads/2026/07/002-cover-photo-1536x672-1.webp
      varieties .... Sir-Walter.webp / Matilda.webp / Kikuyu.webp /
                     WinterGreen.webp / Greenless.webp
@@ -531,12 +542,12 @@ form.sent{ display:none; }
     <div class="wrap hero-grid">
 
       <div>
-        <p class="eyebrow">Turf supplier &amp; installer — Sydney</p>
+        <p class="eyebrow">Sydney turf supplier &amp; installer</p>
 
         <h1>Premium instant turf, grown on our own Sydney farm</h1>
 
         <p class="hero-lede">
-          Farm-fresh turf cut to order and delivered — or fully installed — right across Greater Sydney.
+          Farm-fresh turf cut to order and delivered, or fully installed, right across Greater Sydney.
           Family owned and operated for over 45 years, with honest advice and pricing that stacks up.
         </p>
 
@@ -547,7 +558,7 @@ form.sent{ display:none; }
           </li>
           <li>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-            <span>Cut to order — most jobs ready within 1–2 days</span>
+            <span>Cut to order, most jobs ready within 1-2 days</span>
           </li>
           <li>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
@@ -556,7 +567,8 @@ form.sent{ display:none; }
         </ul>
 
         <div class="hero-cta">
-          <a class="btn btn-primary btn-lg" href="#lead-form">BOOK YOUR CONSULTATION HERE</a>
+          <a class="btn btn-primary btn-lg" href="#lead-form">BOOK YOUR CONSULTATION HERE
+            <span class="btn-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a>
           <a class="btn btn-light btn-lg" href="tel:0490779707">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             0490 779 707
@@ -624,7 +636,7 @@ form.sent{ display:none; }
                   <option>Turf delivered (supply only)</option>
                   <option>Pick up from the farm</option>
                   <option>Maxi roll turf</option>
-                  <option>Not sure — please advise</option>
+                  <option>Not sure, please advise</option>
                 </select>
               </div>
             </div>
@@ -632,7 +644,7 @@ form.sent{ display:none; }
             <div class="frow">
               <label for="h-variety">Turf variety</label>
               <select id="h-variety" name="variety">
-                <option value="">Not sure — please advise</option>
+                <option value="">Not sure, please advise</option>
                 <option>Sir Walter Soft Leaf Buffalo</option>
                 <option>Matilda Soft Leaf Buffalo</option>
                 <option>Kikuyu</option>
@@ -641,7 +653,8 @@ form.sent{ display:none; }
               </select>
             </div>
 
-            <button class="btn btn-primary btn-block" type="submit">BOOK YOUR CONSULTATION HERE</button>
+            <button class="btn btn-primary btn-block" type="submit">BOOK YOUR CONSULTATION HERE
+            <span class="btn-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></button>
 
             <p class="fnote">
               Prefer to talk it through? Call the farm on <a href="tel:0490779707">0490 779 707</a>
@@ -652,7 +665,7 @@ form.sent{ display:none; }
             <div class="tick">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <h3>Thanks — we've got it.</h3>
+            <h3>Thanks, we've got it.</h3>
             <p>One of the team will be in touch within one business day with your free quote. Need it sooner? Call us on <a href="tel:0490779707">0490 779 707</a>.</p>
           </div>
         </div>
@@ -667,7 +680,7 @@ form.sent{ display:none; }
   <div class="wrap">
     <div class="fact"><span class="k">45+ years</span><span class="v">Family owned &amp; operated</span></div>
     <div class="fact"><span class="k">Our own farm</span><span class="v">Grown on the Hawkesbury River</span></div>
-    <div class="fact"><span class="k">1–2 days</span><span class="v">Cut to order, delivered fresh</span></div>
+    <div class="fact"><span class="k">1-2 days</span><span class="v">Cut to order, delivered fresh</span></div>
     <div class="fact"><span class="k">Greater Sydney</span><span class="v">Delivery &amp; installation coverage</span></div>
   </div>
 </div>
@@ -680,7 +693,7 @@ form.sent{ display:none; }
       <h2>Choose the right grass for your place</h2>
       <p class="head-p">
         Five premium varieties, all grown on our own farm. Not sure which one suits your soil, shade
-        and foot traffic? Book a consultation and we'll recommend the best fit — no upselling.
+        and foot traffic? Book a consultation and we'll recommend the best fit, with no upselling.
       </p>
     </div>
 
@@ -710,7 +723,7 @@ form.sent{ display:none; }
         </div>
         <div class="v-body">
           <h3>Matilda Soft Leaf Buffalo</h3>
-          <p>Proudly Australian-bred with finer stems and stolons — beautifully soft to walk on, yet tough on wear and tear.</p>
+          <p>Proudly Australian-bred with finer stems and stolons. Beautifully soft to walk on, yet tough on wear and tear.</p>
           <ul class="v-specs">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Fine, dense leaf</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Strong wear tolerance</li>
@@ -744,7 +757,7 @@ form.sent{ display:none; }
         </div>
         <div class="v-body">
           <h3>Wintergreen Couch</h3>
-          <p>A thick mat with a fine blade, used on top sports stadiums and golf courses — and equally at home on a premium lawn.</p>
+          <p>A thick mat with a fine blade, used on top sports stadiums and golf courses, and equally at home on a premium lawn.</p>
           <ul class="v-specs">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Fine blade, dense mat</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Excellent drought tolerance</li>
@@ -761,7 +774,7 @@ form.sent{ display:none; }
         </div>
         <div class="v-body">
           <h3>Greenlees Park Couch</h3>
-          <p>A darker green, fine-textured premium couch — ideal for bowling greens, showpiece front lawns and commercial landscapes.</p>
+          <p>A darker green, fine-textured premium couch, ideal for bowling greens, showpiece front lawns and commercial landscapes.</p>
           <ul class="v-specs">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Deep green colour</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Very fine texture</li>
@@ -783,7 +796,7 @@ form.sent{ display:none; }
       <h2>However you want it done, we've got it covered</h2>
       <p class="head-p">
         From a single pallet picked up at the farm gate to a fully prepped and installed commercial
-        landscape — one team, start to finish.
+        landscape. One team, start to finish.
       </p>
     </div>
 
@@ -798,13 +811,13 @@ form.sent{ display:none; }
       <div class="svc">
         <div class="svc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
         <h3>Turf Pickup</h3>
-        <p>Collect your order from our Hawkesbury River farm at a time that suits — often the most cost-effective option for smaller jobs.</p>
+        <p>Collect your order from our Hawkesbury River farm at a time that suits. Often the most cost-effective option for smaller jobs.</p>
       </div>
 
       <div class="svc">
         <div class="svc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2"/></svg></div>
         <h3>Maxi Roll Turf</h3>
-        <p>Large-format rolls that cover big areas fast with fewer seams — ideal for sports fields, parks and developments.</p>
+        <p>Large-format rolls that cover big areas fast with fewer seams, ideal for sports fields, parks and developments.</p>
       </div>
 
       <div class="svc">
@@ -816,19 +829,20 @@ form.sent{ display:none; }
       <div class="svc">
         <div class="svc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
         <h3>Full Turf Installation</h3>
-        <p>Old lawn removal, levelling, underlay and laying — a properly prepared base so your new lawn roots evenly and lasts.</p>
+        <p>Old lawn removal, levelling, underlay and laying, so your new lawn goes onto a properly prepared base and roots evenly.</p>
       </div>
 
       <div class="svc">
         <div class="svc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4.5 8-11a8 8 0 1 0-16 0c0 6.5 8 11 8 11z"/><path d="M12 15V8"/><path d="M9 10.5c1.5 0 3 1 3 2.5"/><path d="M15 9c-1.5 0-3 1-3 2.5"/></svg></div>
         <h3>Expert Turf Advice</h3>
-        <p>Free guidance on variety selection, quantities, soil prep and aftercare — so you only buy what you actually need.</p>
+        <p>Free guidance on variety selection, quantities, soil prep and aftercare, so you only buy what you actually need.</p>
       </div>
 
     </div>
 
     <div style="display:flex; justify-content:center; margin-top:2.2rem;">
-      <a class="btn btn-primary btn-lg" href="#lead-form">BOOK YOUR CONSULTATION HERE</a>
+      <a class="btn btn-primary btn-lg" href="#lead-form">BOOK YOUR CONSULTATION HERE
+            <span class="btn-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a>
     </div>
   </div>
 </section>
@@ -843,7 +857,7 @@ form.sent{ display:none; }
 
     <div>
       <p class="eyebrow">Why Arrow Turf</p>
-      <h2>Straight from the farm — no middlemen, no markups</h2>
+      <h2>Straight from the farm, no middlemen, no markups</h2>
       <p class="head-p">
         We grow it, we cut it, we deliver it and we lay it. That means fresher turf, sharper pricing
         and one accountable team for the whole job.
@@ -881,7 +895,8 @@ form.sent{ display:none; }
       </ul>
 
       <div style="margin-top:2rem;">
-        <a class="btn btn-primary btn-lg" href="#lead-form">BOOK YOUR CONSULTATION HERE</a>
+        <a class="btn btn-primary btn-lg" href="#lead-form">BOOK YOUR CONSULTATION HERE
+            <span class="btn-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></a>
       </div>
     </div>
   </div>
@@ -904,12 +919,12 @@ form.sent{ display:none; }
       <div class="step">
         <span class="n">02</span>
         <h3>Get your free quote</h3>
-        <p>We recommend the right variety and send back a clear, itemised price — no obligation.</p>
+        <p>We recommend the right variety and send back a clear, itemised price with no obligation.</p>
       </div>
       <div class="step">
         <span class="n">03</span>
         <h3>We cut &amp; deliver</h3>
-        <p>Your turf is harvested to order and delivered — or picked up — on your chosen day.</p>
+        <p>Your turf is harvested to order and delivered, or picked up, on your chosen day.</p>
       </div>
       <div class="step">
         <span class="n">04</span>
@@ -926,7 +941,7 @@ form.sent{ display:none; }
     <div class="head center rv">
       <p class="eyebrow">Recent work</p>
       <h2>Lawns we've delivered across Sydney</h2>
-      <p class="head-p">Residential lawns, commercial landscapes and sports surfaces — all grown and laid by our own team.</p>
+      <p class="head-p">Residential lawns, commercial landscapes and sports surfaces, all grown and laid by our own team.</p>
     </div>
 
     <div class="mosaic rv">
@@ -957,7 +972,7 @@ form.sent{ display:none; }
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
         </span>
-        <p>“Trevor was fantastic from the very first time I spoke to him. He informed me on every detail — delivery time, watering and care instructions. He marked out my block perfectly, making sure the turf layers got the job done correctly first time. The turf looks beautiful.”</p>
+        <p>“Trevor was fantastic from the very first time I spoke to him. He informed me on every detail: delivery time, watering and care instructions. He marked out my block perfectly, making sure the turf layers got the job done correctly first time. The turf looks beautiful.”</p>
         <span class="who">Sallyanne H.</span>
         <span class="src">Google review</span>
       </div>
@@ -970,7 +985,7 @@ form.sent{ display:none; }
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
         </span>
-        <p>“I can highly recommend Zak and the whole team. I ordered 170sqm of Sir Walter Buffalo for my front lawn — very happy with the organisation, delivery and price. Look forward to dealing with them again for my back yard project.”</p>
+        <p>“I can highly recommend Zak and the whole team. I ordered 170sqm of Sir Walter Buffalo for my front lawn. Very happy with the organisation, delivery and price. Look forward to dealing with them again for my back yard project.”</p>
         <span class="who">Thomas R.</span>
         <span class="src">Google review</span>
       </div>
@@ -983,7 +998,7 @@ form.sent{ display:none; }
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
         </span>
-        <p>“Turf delivered today — extremely happy with the grass and the customer service. Highly recommend Arrow Turf: good quality and even better prices.”</p>
+        <p>“Turf delivered today and extremely happy with the grass and the customer service. Highly recommend Arrow Turf: good quality and even better prices.”</p>
         <span class="who">Cat &amp; Haylee G.</span>
         <span class="src">Google reviews</span>
       </div>
@@ -1043,7 +1058,7 @@ form.sent{ display:none; }
             <div class="frow">
               <label for="c-variety">Turf variety</label>
               <select id="c-variety" name="variety">
-                <option value="">Not sure — please advise</option>
+                <option value="">Not sure, please advise</option>
                 <option>Sir Walter Soft Leaf Buffalo</option>
                 <option>Matilda Soft Leaf Buffalo</option>
                 <option>Kikuyu</option>
@@ -1061,16 +1076,17 @@ form.sent{ display:none; }
               <option>Turf delivered (supply only)</option>
               <option>Pick up from the farm</option>
               <option>Maxi roll turf</option>
-              <option>Not sure — please advise</option>
+              <option>Not sure, please advise</option>
             </select>
           </div>
 
           <div class="frow">
             <label for="c-message">Your project</label>
-            <textarea id="c-message" name="message" placeholder="Anything else we should know — access, timing, site condition?"></textarea>
+            <textarea id="c-message" name="message" placeholder="Anything else we should know about access, timing or site condition?"></textarea>
           </div>
 
-          <button class="btn btn-primary btn-block btn-lg" type="submit">BOOK YOUR CONSULTATION HERE</button>
+          <button class="btn btn-primary btn-block btn-lg" type="submit">BOOK YOUR CONSULTATION HERE
+            <span class="btn-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span></button>
 
           <p class="fnote">Free, no-obligation quote. We never share your details.</p>
         </form>
@@ -1079,7 +1095,7 @@ form.sent{ display:none; }
           <div class="tick">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
-          <h3>Thanks — we've got it.</h3>
+          <h3>Thanks, we've got it.</h3>
           <p>One of the team will be in touch within one business day with your free quote. Need it sooner? Call us on <a href="tel:0490779707">0490 779 707</a>.</p>
         </div>
       </div>
@@ -1114,12 +1130,12 @@ form.sent{ display:none; }
           <span class="crow-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
           <span>
             <span class="crow-k">Opening hours</span>
-            <span class="crow-v">Mon–Fri 7:30am–4pm · Sat 7:30am–12pm</span>
+            <span class="crow-v">Mon-Fri 7:30am-4pm · Sat 7:30am-12pm</span>
           </span>
         </div>
 
         <iframe class="map"
-                title="Arrow Turf farm location — 104 Cornwallis Road, Cornwallis NSW"
+                title="Arrow Turf farm location, 104 Cornwallis Road, Cornwallis NSW"
                 loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.3422458211644!2d150.8133642!3d-33.5964234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b0d6393ae064ec3%3A0x69b8604d19b759c7!2sArrow%20Turf%20Supplier%20Sydney!5e0!3m2!1sen!2sau!4v1783902309632!5m2!1sen!2sau"></iframe>
