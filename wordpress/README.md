@@ -49,6 +49,9 @@ Load any admin page. The seeder creates **Instant Turf Sydney**
 field. An admin notice confirms how many fields and repeater rows were written
 and links to the page.
 
+- The seeder never overwrites a field that already has a value, so bumping
+  `ATF_LP_SEED_VERSION` re-runs it safely: it fills in anything still empty and
+  leaves your edits alone.
 - Re-run over existing values: `/wp-admin/?atf_lp_seed=force` (administrators only)
 - WP-CLI: `wp atf-lp seed [--force]`
 - To publish immediately instead of drafting, change `ATF_LP_SEED_STATUS` at the
@@ -77,16 +80,17 @@ then the un-sized original, then the filename alone, so it still works if the
 site has changed domain. Anything it cannot resolve is left empty and the
 template falls back to the live URL, so no image ever disappears.
 
-## 4. Attach your forms
+## 4. Forms
 
-Both forms are Contact Form 7 fields:
+Both forms default to `[contact-form-7 id="fa9bd4f" title="Google Ads Form"]`.
+To use a different form on either, set it in ACF:
 
 - Hero: **Hero → Contact Form 7 shortcode**
 - Bottom: **Contact → Contact Form 7 shortcode**
 
-Leave a field blank and the template renders a built-in fallback form instead.
+Clear a field entirely and the template renders a built-in fallback form instead.
 That fallback validates and shows the thank-you panel, but **it does not send
-anything**. Add the CF7 shortcodes before this page takes paid traffic.
+anything**, so leave the CF7 shortcode in place for anything taking paid traffic.
 
 Build the CF7 form with the same wrappers the fallback uses and it will match
 the design with no extra CSS:

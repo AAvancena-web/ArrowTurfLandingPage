@@ -40,7 +40,7 @@ function atf_lp_default_content() {
 			'rating'         => 'Rated 5.0 by Sydney homeowners, builders & landscapers on Google',
 			'form_title'     => 'Book Your Consultation',
 			'form_sub'       => 'Free &middot; No obligation &middot; 1 business day reply',
-			'form_shortcode' => '',
+			'form_shortcode' => '[contact-form-7 id="fa9bd4f" title="Google Ads Form"]',
 			'form_note'      => 'Prefer to talk it through? Call the farm on',
 		),
 
@@ -182,7 +182,7 @@ function atf_lp_default_content() {
 			'intro'          => 'Send us a few details and we&rsquo;ll get straight back to you with advice and a no-obligation price.',
 			'form_title'     => 'Tell us about your project',
 			'form_sub'       => 'We reply to every enquiry within one business day.',
-			'form_shortcode' => '',
+			'form_shortcode' => '[contact-form-7 id="fa9bd4f" title="Google Ads Form"]',
 			'form_note'      => 'Free, no-obligation quote. We never share your details.',
 			'rows'           => array(
 				array( 'icon' => 'phone', 'label' => 'Phone',         'value' => '0490 779 707',                              'url' => 'tel:0490779707' ),
@@ -340,5 +340,111 @@ function atf_lp_stars( $label = '' ) {
 	$star = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>';
 	$attr = $label ? ' aria-label="' . esc_attr( $label ) . '"' : ' aria-hidden="true"';
 	return '<span class="stars"' . $attr . '>' . str_repeat( $star, 5 ) . '</span>';
+}
+endif;
+
+/* ---------------------------------------------------------------------------
+ * Fallback form and thank-you panel.
+ *
+ * Only used when no Contact Form 7 shortcode is set, so the page is never
+ * shipped without a visible form. It posts nowhere: wire up CF7 before this
+ * goes live on paid traffic.
+ * ------------------------------------------------------------------------ */
+
+if ( ! function_exists( 'atf_lp_fallback_form' ) ) :
+/**
+ * @param string $prefix     Unique id prefix, e.g. 'h' or 'c'.
+ * @param string $cta        Submit button label.
+ * @param bool   $with_extra Include the variety select and message textarea.
+ * @return void
+ */
+function atf_lp_fallback_form( $prefix, $cta, $with_extra = false ) {
+	$p = sanitize_html_class( $prefix );
+	?>
+	<form class="atf-form" novalidate>
+		<div class="f2">
+			<div class="frow">
+				<label for="<?php echo esc_attr( $p ); ?>-name">Your name <span class="req">*</span></label>
+				<input type="text" id="<?php echo esc_attr( $p ); ?>-name" name="name" autocomplete="name" required>
+				<span class="err-msg">Please enter your name.</span>
+			</div>
+			<div class="frow">
+				<label for="<?php echo esc_attr( $p ); ?>-phone">Phone <span class="req">*</span></label>
+				<input type="tel" id="<?php echo esc_attr( $p ); ?>-phone" name="phone" autocomplete="tel" required>
+				<span class="err-msg">Please enter a contact number.</span>
+			</div>
+		</div>
+		<div class="f2">
+			<div class="frow">
+				<label for="<?php echo esc_attr( $p ); ?>-email">Email <span class="req">*</span></label>
+				<input type="email" id="<?php echo esc_attr( $p ); ?>-email" name="email" autocomplete="email" required>
+				<span class="err-msg">Please enter a valid email address.</span>
+			</div>
+			<div class="frow">
+				<label for="<?php echo esc_attr( $p ); ?>-suburb">Suburb <span class="req">*</span></label>
+				<input type="text" id="<?php echo esc_attr( $p ); ?>-suburb" name="suburb" autocomplete="address-level2" required>
+				<span class="err-msg">Please enter your suburb.</span>
+			</div>
+		</div>
+		<div class="f2">
+			<div class="frow">
+				<label for="<?php echo esc_attr( $p ); ?>-area">Approx. area (m&sup2;)</label>
+				<input type="text" id="<?php echo esc_attr( $p ); ?>-area" name="area" inputmode="numeric" placeholder="e.g. 120">
+			</div>
+			<div class="frow">
+				<label for="<?php echo esc_attr( $p ); ?>-variety">Turf variety</label>
+				<select id="<?php echo esc_attr( $p ); ?>-variety" name="variety">
+					<option value="">Not sure, please advise</option>
+					<option>Sir Walter Soft Leaf Buffalo</option>
+					<option>Matilda Soft Leaf Buffalo</option>
+					<option>Kikuyu</option>
+					<option>Wintergreen Couch</option>
+					<option>Greenlees Park Couch</option>
+				</select>
+			</div>
+		</div>
+		<div class="frow">
+			<label for="<?php echo esc_attr( $p ); ?>-service">What do you need?</label>
+			<select id="<?php echo esc_attr( $p ); ?>-service" name="service">
+				<option value="">Select an option</option>
+				<option>Turf supplied &amp; installed</option>
+				<option>Turf delivered (supply only)</option>
+				<option>Pick up from the farm</option>
+				<option>Maxi roll turf</option>
+				<option>Not sure, please advise</option>
+			</select>
+		</div>
+		<?php if ( $with_extra ) : ?>
+			<div class="frow">
+				<label for="<?php echo esc_attr( $p ); ?>-message">Your project</label>
+				<textarea id="<?php echo esc_attr( $p ); ?>-message" name="message" placeholder="Anything else we should know about access, timing or site condition?"></textarea>
+			</div>
+		<?php endif; ?>
+		<button class="btn btn-primary btn-block<?php echo $with_extra ? ' btn-lg' : ''; ?>" type="submit">
+			<?php echo wp_kses_post( $cta ); ?>
+			<span class="btn-arrow" aria-hidden="true"><?php echo atf_lp_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
+		</button>
+	</form>
+	<?php
+}
+endif;
+
+if ( ! function_exists( 'atf_lp_thanks' ) ) :
+/**
+ * @param string $title     Heading.
+ * @param string $text      Body copy.
+ * @param string $tel       tel: link.
+ * @param string $phone_txt Phone number as displayed.
+ * @return void
+ */
+function atf_lp_thanks( $title, $text, $tel, $phone_txt ) {
+	?>
+	<div class="form-success" role="status" aria-live="polite">
+		<div class="tick"><?php echo atf_lp_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
+		<h3><?php echo wp_kses_post( $title ); ?></h3>
+		<p><?php echo wp_kses_post( $text ); ?>
+			Need it sooner? Call us on <a href="<?php echo esc_url( $tel ); ?>"><?php echo esc_html( $phone_txt ); ?></a>.</p>
+	</div>
+	<?php
 }
 endif;

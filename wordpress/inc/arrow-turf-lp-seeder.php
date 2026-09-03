@@ -17,7 +17,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-defined( 'ATF_LP_SEED_VERSION' )  || define( 'ATF_LP_SEED_VERSION', '1.0.0' );
+defined( 'ATF_LP_SEED_VERSION' )  || define( 'ATF_LP_SEED_VERSION', '1.1.0' );
 defined( 'ATF_LP_SEED_OPTION' )   || define( 'ATF_LP_SEED_OPTION', 'atf_lp_seeded' );
 defined( 'ATF_LP_SEED_SLUG' )     || define( 'ATF_LP_SEED_SLUG', 'instant-turf-sydney' );
 defined( 'ATF_LP_SEED_TITLE' )    || define( 'ATF_LP_SEED_TITLE', 'Instant Turf Sydney' );

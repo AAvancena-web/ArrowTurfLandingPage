@@ -647,14 +647,42 @@ form.sent{ display:none; }
 
 /* ============================================================
    THEME RESET
-   The parent theme styles headings, buttons and inputs globally.
-   These few rules stop it bleeding in if its stylesheet is still
-   enqueued on this template.
+
+   The parent and child themes style headings, paragraphs and the
+   root font size globally, and some of their selectors outrank a
+   bare element selector. These rules win those specific fights
+   without outranking the landing page's own section styles.
+
+   Colour and paragraph rules use :where(), which contributes zero
+   specificity, so `.hero h1 { color:#fff }` and friends still win.
+   Getting this wrong turns the hero heading dark on a dark image.
    ============================================================ */
-body.atf-lp h1, body.atf-lp h2, body.atf-lp h3{ color:var(--ink); margin:0; }
-body.atf-lp p{ color:inherit; }
-body.atf-lp ul{ margin:0; padding:0; list-style:none; }
-body.atf-lp a{ text-decoration:none; }
+
+/* the child theme sets a fluid root font-size; the LP is designed at 100% */
+html:has(body.atf-lp){ font-size:100%; }
+
+/* .custom-background outranks a bare body selector */
+body.atf-lp{ background:var(--paper); color:var(--ink); font-family:var(--body); font-size:18.7px; line-height:1.65; }
+
+/* the child theme's `body h1` outranks a bare `h1`, so match its weight */
+body.atf-lp h1, body.atf-lp h2, body.atf-lp h3, body.atf-lp h4{ font-family:var(--display); }
+body.atf-lp a, body.atf-lp p, body.atf-lp li, body.atf-lp label,
+body.atf-lp input, body.atf-lp select, body.atf-lp textarea, body.atf-lp button{ font-family:var(--body); }
+body.atf-lp .eyebrow, body.atf-lp .sub, body.atf-lp .crow-k,
+body.atf-lp .v-tag, body.atf-lp .v-link, body.atf-lp .review .src,
+body.atf-lp .lc-top .sub{ font-family:var(--mono); }
+
+/* zero-specificity defaults: they beat the theme, and lose to everything of ours */
+:where(body.atf-lp) h1, :where(body.atf-lp) h2,
+:where(body.atf-lp) h3, :where(body.atf-lp) h4{ color:var(--ink); margin:0; }
+:where(body.atf-lp) p{ color:inherit; font-size:inherit; line-height:inherit; margin:0 0 1rem; }
+:where(body.atf-lp) ul, :where(body.atf-lp) ol{ margin:0; padding:0; list-style:none; }
+:where(body.atf-lp) li{ font-size:inherit; line-height:inherit; color:inherit; }
+:where(body.atf-lp) a{ color:inherit; text-decoration:none; }
+:where(body.atf-lp) figure{ margin:0; }
+:where(body.atf-lp) img{ height:auto; }
+
+/* the theme wraps content in these; the LP lays itself out */
 body.atf-lp #page, body.atf-lp .site-content, body.atf-lp .corp-container{
   max-width:none; width:auto; margin:0; padding:0;
 }
@@ -1057,110 +1085,3 @@ body.atf-lp #page, body.atf-lp .site-content, body.atf-lp .corp-container{
 <?php wp_footer(); ?>
 </body>
 </html>
-<?php
-
-/* ---------------------------------------------------------------------------
- * Fallback form and thank-you panel.
- *
- * Only used when no Contact Form 7 shortcode is set, so the page is never
- * shipped without a visible form. It posts nowhere: wire up CF7 before this
- * goes live on paid traffic.
- * ------------------------------------------------------------------------ */
-
-if ( ! function_exists( 'atf_lp_fallback_form' ) ) :
-/**
- * @param string $prefix     Unique id prefix, e.g. 'h' or 'c'.
- * @param string $cta        Submit button label.
- * @param bool   $with_extra Include the variety select and message textarea.
- * @return void
- */
-function atf_lp_fallback_form( $prefix, $cta, $with_extra = false ) {
-	$p = sanitize_html_class( $prefix );
-	?>
-	<form class="atf-form" novalidate>
-		<div class="f2">
-			<div class="frow">
-				<label for="<?php echo esc_attr( $p ); ?>-name">Your name <span class="req">*</span></label>
-				<input type="text" id="<?php echo esc_attr( $p ); ?>-name" name="name" autocomplete="name" required>
-				<span class="err-msg">Please enter your name.</span>
-			</div>
-			<div class="frow">
-				<label for="<?php echo esc_attr( $p ); ?>-phone">Phone <span class="req">*</span></label>
-				<input type="tel" id="<?php echo esc_attr( $p ); ?>-phone" name="phone" autocomplete="tel" required>
-				<span class="err-msg">Please enter a contact number.</span>
-			</div>
-		</div>
-		<div class="f2">
-			<div class="frow">
-				<label for="<?php echo esc_attr( $p ); ?>-email">Email <span class="req">*</span></label>
-				<input type="email" id="<?php echo esc_attr( $p ); ?>-email" name="email" autocomplete="email" required>
-				<span class="err-msg">Please enter a valid email address.</span>
-			</div>
-			<div class="frow">
-				<label for="<?php echo esc_attr( $p ); ?>-suburb">Suburb <span class="req">*</span></label>
-				<input type="text" id="<?php echo esc_attr( $p ); ?>-suburb" name="suburb" autocomplete="address-level2" required>
-				<span class="err-msg">Please enter your suburb.</span>
-			</div>
-		</div>
-		<div class="f2">
-			<div class="frow">
-				<label for="<?php echo esc_attr( $p ); ?>-area">Approx. area (m&sup2;)</label>
-				<input type="text" id="<?php echo esc_attr( $p ); ?>-area" name="area" inputmode="numeric" placeholder="e.g. 120">
-			</div>
-			<div class="frow">
-				<label for="<?php echo esc_attr( $p ); ?>-variety">Turf variety</label>
-				<select id="<?php echo esc_attr( $p ); ?>-variety" name="variety">
-					<option value="">Not sure, please advise</option>
-					<option>Sir Walter Soft Leaf Buffalo</option>
-					<option>Matilda Soft Leaf Buffalo</option>
-					<option>Kikuyu</option>
-					<option>Wintergreen Couch</option>
-					<option>Greenlees Park Couch</option>
-				</select>
-			</div>
-		</div>
-		<div class="frow">
-			<label for="<?php echo esc_attr( $p ); ?>-service">What do you need?</label>
-			<select id="<?php echo esc_attr( $p ); ?>-service" name="service">
-				<option value="">Select an option</option>
-				<option>Turf supplied &amp; installed</option>
-				<option>Turf delivered (supply only)</option>
-				<option>Pick up from the farm</option>
-				<option>Maxi roll turf</option>
-				<option>Not sure, please advise</option>
-			</select>
-		</div>
-		<?php if ( $with_extra ) : ?>
-			<div class="frow">
-				<label for="<?php echo esc_attr( $p ); ?>-message">Your project</label>
-				<textarea id="<?php echo esc_attr( $p ); ?>-message" name="message" placeholder="Anything else we should know about access, timing or site condition?"></textarea>
-			</div>
-		<?php endif; ?>
-		<button class="btn btn-primary btn-block<?php echo $with_extra ? ' btn-lg' : ''; ?>" type="submit">
-			<?php echo wp_kses_post( $cta ); ?>
-			<span class="btn-arrow" aria-hidden="true"><?php echo atf_lp_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
-		</button>
-	</form>
-	<?php
-}
-endif;
-
-if ( ! function_exists( 'atf_lp_thanks' ) ) :
-/**
- * @param string $title     Heading.
- * @param string $text      Body copy.
- * @param string $tel       tel: link.
- * @param string $phone_txt Phone number as displayed.
- * @return void
- */
-function atf_lp_thanks( $title, $text, $tel, $phone_txt ) {
-	?>
-	<div class="form-success" role="status" aria-live="polite">
-		<div class="tick"><?php echo atf_lp_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
-		<h3><?php echo wp_kses_post( $title ); ?></h3>
-		<p><?php echo wp_kses_post( $text ); ?>
-			Need it sooner? Call us on <a href="<?php echo esc_url( $tel ); ?>"><?php echo esc_html( $phone_txt ); ?></a>.</p>
-	</div>
-	<?php
-}
-endif;
