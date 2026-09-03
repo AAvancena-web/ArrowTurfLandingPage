@@ -16,8 +16,7 @@ no dependencies beyond Google Fonts.
 | 6 | How it works | Four-step process — removes friction before the enquiry |
 | 7 | Recent work | Six-image project gallery |
 | 8 | Reviews | Three Google reviews, 5-star |
-| 9 | FAQ | Six objection-handling questions |
-| 10 | Contact | Enquiry form + contact details + Google Map |
+| 9 | Contact | Enquiry form + contact details + Google Map |
 
 No site header or footer by design — the page keeps ad traffic focused on
 the two conversion actions: **submit the form** or **call the farm**.
@@ -25,8 +24,11 @@ the two conversion actions: **submit the form** or **call the farm**.
 ## Conversion mechanics
 
 - Lead form is above the fold on desktop and immediately below the hero copy on mobile.
-- Primary CTA text is `BOOK YOUR CONSULTATION HERE` throughout, in `--clay` so it
-  stands out against the green brand palette.
+- Primary CTA text is `BOOK YOUR CONSULTATION HERE` throughout, in the brand green.
+- Every CTA carries a "flash": a narrow shine sweeps across it (`@keyframes atf-shine`,
+  ~0.8s sweep then a ~2.4s pause). Primary CTAs also get a soft outward glow pulse
+  (`@keyframes atf-pulse`) — delete that one block to keep the shine on its own.
+  Both are suppressed under `prefers-reduced-motion`.
 - Every CTA either scrolls to a form (`#lead-form` / `#contact`) or dials `tel:0490779707`.
 - Base font size is 18.7px; every `font-size` in the stylesheet is set from that same 110% scale.
 - Sticky call/enquire bar pinned to the bottom on screens ≤760px.
