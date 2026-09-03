@@ -49,9 +49,8 @@ Load any admin page. The seeder creates **Instant Turf Sydney**
 field. An admin notice confirms how many fields and repeater rows were written
 and links to the page.
 
-- The seeder never overwrites a field that already has a value, so bumping
-  `ATF_LP_SEED_VERSION` re-runs it safely: it fills in anything still empty and
-  leaves your edits alone.
+- The seeder never overwrites a field that already has a value, so a re-run only
+  fills in what is still empty.
 - Re-run over existing values: `/wp-admin/?atf_lp_seed=force` (administrators only)
 - WP-CLI: `wp atf-lp seed [--force]`
 - To publish immediately instead of drafting, change `ATF_LP_SEED_STATUS` at the
@@ -82,8 +81,10 @@ template falls back to the live URL, so no image ever disappears.
 
 ## 4. Forms
 
-Both forms default to `[contact-form-7 id="fa9bd4f" title="Google Ads Form"]`.
-To use a different form on either, set it in ACF:
+Both forms default to `[contact-form-7 id="fa9bd4f" title="Google Ads Form"]`,
+which lives in `arrow-turf-lp-content.php`, so it renders whether or not the ACF
+field holds anything. To use a different form on either, paste its shortcode into
+the matching field:
 
 - Hero: **Hero → Contact Form 7 shortcode**
 - Bottom: **Contact → Contact Form 7 shortcode**
