@@ -1,0 +1,1166 @@
+<?php
+/**
+ * Template Name: Arrow Turf Landing Page
+ *
+ * Standalone landing page for Google Ads traffic. Deliberately renders no
+ * site header, navigation or footer so paid traffic has only two actions:
+ * submit the form or call the farm. wp_head() and wp_footer() still fire, so
+ * GTM, Contact Form 7 and anything else hooked in keeps working.
+ *
+ * Every field falls back to the copy in inc/arrow-turf-lp-content.php, so the
+ * page renders correctly before the seeder has run.
+ *
+ * @package siteorigin-corp-child
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+require_once get_stylesheet_directory() . '/inc/arrow-turf-lp-content.php';
+
+$atf_d = atf_lp_default_content();
+
+/* ---------------------------------------------------------------------------
+ * Resolve content once, up front, so the markup below stays readable.
+ * ------------------------------------------------------------------------ */
+
+$atf_phone     = atf_lp_get( 'phone', $atf_d['phone'] );
+$atf_phone_txt = atf_lp_get( 'phone_display', $atf_d['phone_display'] );
+$atf_email     = atf_lp_get( 'email', $atf_d['email'] );
+
+$atf_hero = array(
+	'image'     => atf_lp_image( atf_lp_get( 'hero_image', '' ), $atf_d['hero']['image'], $atf_d['hero']['image_alt'], 'full' ),
+	'eyebrow'   => atf_lp_get( 'hero_eyebrow', $atf_d['hero']['eyebrow'] ),
+	'heading'   => atf_lp_get( 'hero_heading', $atf_d['hero']['heading'] ),
+	'lede'      => atf_lp_get( 'hero_lede', $atf_d['hero']['lede'] ),
+	'cta'       => atf_lp_get( 'hero_cta_label', $atf_d['hero']['cta_label'] ),
+	'rating'    => atf_lp_get( 'hero_rating', $atf_d['hero']['rating'] ),
+	'f_title'   => atf_lp_get( 'hero_form_title', $atf_d['hero']['form_title'] ),
+	'f_sub'     => atf_lp_get( 'hero_form_sub', $atf_d['hero']['form_sub'] ),
+	'f_code'    => atf_lp_get( 'hero_form_shortcode', $atf_d['hero']['form_shortcode'] ),
+	'f_note'    => atf_lp_get( 'hero_form_note', $atf_d['hero']['form_note'] ),
+);
+
+$atf_ticks = array();
+foreach ( atf_lp_rows( 'hero_ticks' ) as $row ) {
+	if ( ! empty( $row['text'] ) ) {
+		$atf_ticks[] = $row['text'];
+	}
+}
+if ( ! $atf_ticks ) {
+	$atf_ticks = $atf_d['hero']['ticks'];
+}
+
+$atf_facts    = atf_lp_rows( 'facts', $atf_d['facts'] );
+$atf_thanks_t = atf_lp_get( 'thanks_title', $atf_d['thanks']['title'] );
+$atf_thanks_x = atf_lp_get( 'thanks_text', $atf_d['thanks']['text'] );
+
+$atf_var      = $atf_d['varieties'];
+$atf_var_rows = atf_lp_rows( 'varieties', $atf_var['items'] );
+$atf_svc      = $atf_d['services'];
+$atf_svc_rows = atf_lp_rows( 'services', $atf_svc['items'] );
+$atf_why      = $atf_d['why'];
+$atf_why_rows = atf_lp_rows( 'why_items', $atf_why['items'] );
+$atf_how      = $atf_d['how'];
+$atf_how_rows = atf_lp_rows( 'how_items', $atf_how['items'] );
+$atf_prj      = $atf_d['projects'];
+$atf_rev      = $atf_d['reviews'];
+$atf_rev_rows = atf_lp_rows( 'reviews', $atf_rev['items'] );
+$atf_con      = $atf_d['contact'];
+
+$atf_gallery = atf_lp_get( 'projects_gallery', array() );
+if ( ! is_array( $atf_gallery ) || ! $atf_gallery ) {
+	$atf_gallery = array();
+	foreach ( $atf_prj['images'] as $url ) {
+		$atf_gallery[] = array( 'url' => $url, 'alt' => '' );
+	}
+}
+
+$atf_why_img = atf_lp_image( atf_lp_get( 'why_image', '' ), $atf_why['image'], $atf_why['image_alt'] );
+
+$atf_crows = atf_lp_rows( 'contact_rows', $atf_con['rows'] );
+
+$atf_tel  = 'tel:' . preg_replace( '/[^0-9+]/', '', $atf_phone );
+$atf_icon = 'atf_lp_icon';
+
+?><!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+<meta charset="<?php bloginfo( 'charset' ); ?>">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<?php wp_head(); ?>
+<style>
+/* ============================================================
+   ARROW TURF GOOGLE ADS LANDING PAGE
+   Standalone file. No header / no footer by design.
+   Images point at the live WordPress URLs. Swap the paths
+   in the IMAGE MAP comment below once assets are uploaded.
+   ============================================================ */
+
+:root{
+  --brand:#2C6E3F;
+  --brand-deep:#1B4428;
+  --ink:#16301F;
+  --ink-soft:#4A5C50;
+  --ink-faint:#7C8A81;
+  --clay:#8E4B24;
+  --paper:#F4F6F1;
+  --paper-2:#FFFFFF;
+  --line:#DCE3D8;
+  --line-soft:#E9EEE5;
+  --tint:#E7F0E6;
+  --display:"Bricolage Grotesque", system-ui, sans-serif;
+  --body:"Instrument Sans", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, monospace;
+  --wrap:1440px;
+  --r:10px;
+}
+
+/* Desktop / laptop caps at 1440px, larger screens open up to 1880px */
+@media (min-width:1700px){ :root{ --wrap:1880px; } }
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:18.7px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+img{ max-width:100%; display:block; }
+a{ color:inherit; }
+
+h1,h2,h3,h4{
+  font-family:var(--display);
+  overflow-wrap:break-word;
+  font-weight:800;
+  line-height:1.06;
+  letter-spacing:-.025em;
+  margin:0;
+}
+h2{ font-size:clamp(1.925rem,3.52vw,2.97rem); }
+h3{ font-size:1.265rem; font-weight:600; letter-spacing:-.01em; line-height:1.25; }
+p{ margin:0 0 1rem; }
+p:last-child{ margin-bottom:0; }
+
+.wrap{ max-width:var(--wrap); margin:0 auto; padding:0 24px; }
+@media (max-width:640px){ .wrap{ padding:0 20px; } }
+
+section{ padding:clamp(3rem,5.5vw,5rem) 0; }
+
+.eyebrow{
+  font-family:var(--mono);
+  font-size:.792rem;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:var(--brand);
+  margin:0 0 .8rem;
+}
+
+.head{ max-width:70ch; }
+.head.center{ margin:0 auto clamp(2rem,4vw,3rem); text-align:center; }
+.head-p{ color:var(--ink-soft); font-size:clamp(1.1rem,1.485vw,1.243rem); margin:.9rem 0 0; }
+
+.band-white{ background:var(--paper-2); }
+.band-tint{ background:var(--tint); }
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:14px;
+  cursor:pointer; text-decoration:none; text-align:center;
+  font-family:var(--body); font-size:1.1rem; font-weight:700;
+  letter-spacing:.01em; line-height:1.2;
+  padding:1.05rem 1.9rem;
+  border-radius:var(--r);
+  border:1.5px solid transparent;
+  transition:transform .25s ease, box-shadow .25s ease, color .35s ease, background .25s ease;
+}
+.btn:active{ transform:translateY(1px); }
+.btn svg{ flex:none; width:20px; height:20px; }
+
+.btn-light{ background:#fff; color:var(--ink); border-color:#fff; }
+.btn-light:hover{ background:var(--tint); border-color:var(--tint); transform:translateY(-2px); }
+
+.btn-ghost{ background:transparent; color:var(--ink); border-color:var(--ink); }
+.btn-ghost:hover{ background:var(--ink); color:#fff; }
+
+/* ============================================================
+   PRIMARY CTA
+   Rest: the gradient fills the pill and the glow swells once per
+   cycle, a slow beacon rather than a constant breathe.
+   Hover: the gradient retracts into the arrow circle, revealing
+   the white pill underneath, and the label turns green.
+   ============================================================ */
+.btn-primary{
+  position:relative; isolation:isolate; overflow:hidden;
+  justify-content:space-between;
+  background:#fff; color:#fff;
+  border:0;
+  padding:9.5px 9.5px 9.5px 33.5px;
+  box-shadow:
+    0 0 18px -3px rgba(90,174,110,.58),
+    0 0 38px -6px rgba(44,110,63,.44),
+    0 12px 30px -14px rgba(27,68,40,.85);
+  animation:atfGlow 4.2s ease-in-out infinite;
+}
+@keyframes atfGlow{
+  0%,58%,100%{ box-shadow:
+    0 0 13px -4px rgba(90,174,110,.42),
+    0 0 28px -9px rgba(44,110,63,.30),
+    0 12px 30px -14px rgba(27,68,40,.82); }
+  79%        { box-shadow:
+    0 0 26px -1px rgba(122,199,140,.82),
+    0 0 62px -3px rgba(44,110,63,.62),
+    0 14px 34px -12px rgba(27,68,40,.92); }
+}
+.btn-primary::before{
+  content:""; position:absolute; z-index:-1; top:0; right:0; bottom:0; left:0;
+  background:var(--brand); border-radius:var(--r);
+  transition:left .5s cubic-bezier(.65,.05,.25,1), top .5s cubic-bezier(.65,.05,.25,1),
+             right .5s cubic-bezier(.65,.05,.25,1), bottom .5s cubic-bezier(.65,.05,.25,1),
+             border-radius .5s cubic-bezier(.65,.05,.25,1);
+}
+.btn-primary:hover,
+.btn-primary:focus-visible{
+  color:var(--brand); transform:translateY(-2px); animation:none;
+  box-shadow:
+    0 0 26px -2px rgba(122,199,140,.75),
+    0 0 56px -4px rgba(44,110,63,.60),
+    0 18px 38px -14px rgba(27,68,40,.95);
+}
+.btn-primary:hover::before,
+.btn-primary:focus-visible::before{
+  left:calc(100% - 55.5px); top:9.5px; right:9.5px; bottom:9.5px; border-radius:50%;
+}
+
+.btn-arrow{
+  width:46px; height:46px; border-radius:50%; flex:none;
+  display:grid; place-items:center; color:#fff;
+}
+.btn-arrow svg{ width:18px; height:18px; transition:transform .4s cubic-bezier(.65,.05,.25,1); }
+.btn-primary:hover .btn-arrow svg{ transform:translateX(2px); }
+
+.btn-block{ width:100%; }
+.btn-lg{ font-size:1.166rem; }
+.btn-lg:not(.btn-primary){ padding:1.2rem 2.1rem; }
+
+/* Long CTA copy needs room to breathe on narrow screens */
+@media (max-width:560px){
+  .btn{ font-size:1.012rem; gap:10px; }
+  .btn-lg:not(.btn-primary){ padding:1rem 1.2rem; }
+  .btn-primary{ padding:8.5px 8.5px 8.5px 23.5px; }
+  .btn-primary:hover::before,
+  .btn-primary:focus-visible::before{ left:calc(100% - 48.5px); top:8.5px; right:8.5px; bottom:8.5px; border-radius:50%; }
+  .btn-arrow{ width:40px; height:40px; }
+}
+
+/* ============================================================
+   HERO: copy + CTA left, lead form right
+   ============================================================ */
+.hero{ position:relative; overflow:hidden; background:var(--brand-deep); }
+.hero-bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.hero::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(100deg, rgba(11,26,16,.90) 0%, rgba(11,26,16,.74) 45%, rgba(11,26,16,.52) 100%);
+}
+.hero-in{ position:relative; z-index:2; padding:clamp(2.5rem,5vw,4.5rem) 0; }
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.08fr .92fr;
+  gap:clamp(2rem,4vw,3.5rem);
+  align-items:center;
+}
+@media (max-width:1000px){ .hero-grid{ grid-template-columns:1fr; gap:2rem; } }
+
+.hero .eyebrow{ color:#9FD3AE; }
+.hero h1{
+  color:#fff;
+  font-size:clamp(2.365rem,4.73vw,4.07rem);
+  max-width:17ch;
+}
+.hero-lede{
+  color:#DCEBE0;
+  font-size:clamp(1.133rem,1.485vw,1.32rem);
+  max-width:52ch;
+  margin:1.15rem 0 0;
+}
+
+.hero-ticks{ list-style:none; margin:1.6rem 0 0; padding:0; display:grid; gap:.6rem; max-width:46ch; }
+.hero-ticks li{ display:flex; align-items:flex-start; gap:.65rem; color:#fff; font-size:1.1rem; font-weight:500; }
+.hero-ticks svg{ flex:none; width:20px; height:20px; margin-top:2px; color:#9FD3AE; }
+
+.hero-cta{ display:flex; flex-wrap:wrap; gap:.8rem; margin-top:2rem; }
+.hero-cta .btn{ min-width:250px; }
+@media (max-width:560px){
+  .hero-cta{ flex-direction:column; }
+  .hero-cta .btn{ min-width:0; width:100%; }
+}
+
+.hero-rating{
+  display:flex; align-items:center; gap:.7rem;
+  margin-top:1.6rem; color:#DCEBE0; font-size:1.012rem;
+}
+.stars{ display:inline-flex; gap:2px; color:#F5B60D; }
+.stars svg{ width:17px; height:17px; }
+
+/* ---------- Lead form card ---------- */
+.lead-card{
+  background:var(--paper-2);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 24px 60px rgba(0,0,0,.32);
+}
+.lead-card .lc-top{
+  background:var(--brand);
+  color:#fff;
+  padding:1.15rem 1.5rem;
+  text-align:center;
+}
+.lead-card .lc-top h2{ font-size:1.65rem; color:#fff; }
+.lead-card .lc-top .sub{
+  font-family:var(--mono); font-size:.792rem; letter-spacing:.13em; text-transform:uppercase;
+  color:#BFE0C8; margin:.45rem 0 0;
+}
+.lead-card .lc-body{ padding:1.5rem; }
+
+.f2{ display:grid; grid-template-columns:1fr 1fr; gap:.85rem; }
+@media (max-width:440px){ .f2{ grid-template-columns:1fr; } }
+
+.frow{ margin-bottom:.85rem; }
+.frow label{
+  display:block; font-size:.858rem; font-weight:600; color:var(--ink-soft);
+  margin-bottom:.35rem; letter-spacing:.01em;
+}
+.frow label .req{ color:var(--clay); }
+.frow input,.frow select,.frow textarea{
+  width:100%;
+  font-family:var(--body); font-size:1.1rem; color:var(--ink);
+  padding:.8rem .9rem;
+  background:var(--paper);
+  border:1.5px solid var(--line);
+  border-radius:8px;
+  transition:border-color .15s ease, box-shadow .15s ease;
+  -webkit-appearance:none; appearance:none;
+}
+.frow select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A5C50' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right .8rem center; background-size:16px;
+  padding-right:2.4rem;
+}
+.frow textarea{ min-height:92px; resize:vertical; }
+.frow input:focus,.frow select:focus,.frow textarea:focus{
+  outline:0; border-color:var(--brand); box-shadow:0 0 0 3px rgba(44,110,63,.14);
+}
+.frow input.err,.frow select.err,.frow textarea.err{ border-color:#B3261E; background:#FDF4F3; }
+.err-msg{ display:none; font-size:.836rem; color:#B3261E; margin-top:.3rem; }
+.frow.has-err .err-msg{ display:block; }
+
+.fnote{ font-size:.858rem; color:var(--ink-faint); text-align:center; margin:.9rem 0 0; }
+.fnote a{ color:var(--brand); font-weight:600; text-decoration:none; }
+.fnote a:hover{ text-decoration:underline; }
+
+.form-success{
+  display:none;
+  text-align:center;
+  padding:1.5rem .5rem;
+}
+.form-success.on{ display:block; }
+.form-success .tick{
+  width:58px; height:58px; border-radius:50%;
+  background:var(--tint); color:var(--brand);
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 1rem;
+}
+.form-success .tick svg{ width:28px; height:28px; }
+.form-success h3{ font-family:var(--display); font-size:1.54rem; font-weight:800; margin-bottom:.5rem; }
+.form-success p{ color:var(--ink-soft); font-size:1.045rem; }
+form.sent{ display:none; }
+
+/* ============================================================
+   FACTS BAR
+   ============================================================ */
+.facts{ background:var(--ink); color:#fff; }
+.facts .wrap{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  padding-top:clamp(1.6rem,3vw,2.3rem); padding-bottom:clamp(1.6rem,3vw,2.3rem);
+}
+.fact{ text-align:center; padding:.2rem clamp(.6rem,1.6vw,1.6rem); border-right:1px solid rgba(255,255,255,.15); }
+.fact:last-child{ border-right:0; }
+.fact .k{
+  display:block; font-family:var(--display); font-weight:800;
+  font-size:clamp(1.485rem,2.31vw,2.09rem); letter-spacing:-.025em; line-height:1.15; color:#fff;
+}
+.fact .v{ display:block; font-size:clamp(.913rem,1.1vw,1.045rem); color:#9FD3AE; margin-top:.35rem; }
+@media (max-width:820px){
+  .facts .wrap{ grid-template-columns:1fr 1fr; gap:1.4rem 0; }
+  .fact{ border-right:0; }
+  .fact:nth-child(odd){ border-right:1px solid rgba(255,255,255,.15); }
+}
+
+/* ============================================================
+   TURF VARIETIES
+   ============================================================ */
+.variety-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(258px,1fr));
+  gap:18px;
+}
+.v-card{
+  background:var(--paper-2);
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+  display:flex; flex-direction:column;
+  transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+.v-card:hover{ border-color:var(--brand); transform:translateY(-4px); box-shadow:0 18px 40px rgba(22,48,31,.12); }
+.v-card .v-img{ position:relative; aspect-ratio:4/3; background:var(--tint); overflow:hidden; }
+.v-card .v-img img{ width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
+.v-card:hover .v-img img{ transform:scale(1.06); }
+.v-tag{
+  position:absolute; left:12px; top:12px; z-index:2;
+  background:rgba(11,26,16,.82); color:#9FD3AE;
+  font-family:var(--mono); font-size:.682rem; letter-spacing:.11em; text-transform:uppercase;
+  padding:.4rem .6rem; border-radius:99px;
+}
+.v-body{ padding:1.2rem 1.3rem 1.4rem; display:flex; flex-direction:column; flex:1; }
+.v-body h3{ margin-bottom:.55rem; }
+.v-body p{ font-size:1.012rem; color:var(--ink-soft); margin-bottom:1rem; }
+.v-specs{ list-style:none; margin:0 0 1.2rem; padding:0; display:grid; gap:.4rem; }
+.v-specs li{ display:flex; gap:.5rem; align-items:flex-start; font-size:.946rem; color:var(--ink-soft); }
+.v-specs svg{ flex:none; width:15px; height:15px; margin-top:4px; color:var(--brand); }
+.v-link{
+  margin-top:auto;
+  display:inline-flex; align-items:center; gap:.4rem;
+  font-family:var(--mono); font-size:.814rem; letter-spacing:.1em; text-transform:uppercase;
+  font-weight:500; color:var(--brand); text-decoration:none;
+}
+.v-link:hover{ color:var(--brand-deep); text-decoration:underline; }
+
+/* ============================================================
+   SERVICES
+   ============================================================ */
+.svc-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+@media (max-width:1000px){ .svc-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:640px){ .svc-grid{ grid-template-columns:1fr; } }
+.svc{
+  background:var(--paper-2);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:1.8rem 1.5rem;
+  text-align:center;
+  transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+.svc:hover{ border-color:var(--brand); transform:translateY(-4px); box-shadow:0 16px 38px rgba(22,48,31,.1); }
+.svc-ico{
+  width:54px; height:54px; border-radius:12px;
+  background:var(--tint); color:var(--brand);
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 1.1rem;
+  transition:background .2s ease, color .2s ease;
+}
+.svc:hover .svc-ico{ background:var(--brand); color:#fff; }
+.svc-ico svg{ width:26px; height:26px; }
+.svc h3{ margin-bottom:.5rem; }
+.svc p{ font-size:1.012rem; color:var(--ink-soft); margin:0; }
+
+/* ============================================================
+   STEPS
+   ============================================================ */
+.steps{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; counter-reset:step; }
+.step{
+  background:var(--paper-2); border:1px solid var(--line); border-radius:14px;
+  padding:1.7rem 1.4rem; position:relative;
+}
+.step .n{
+  font-family:var(--display); font-size:2.31rem; font-weight:800; letter-spacing:-.03em;
+  color:var(--brand); opacity:.28; line-height:1; display:block; margin-bottom:.7rem;
+}
+.step h3{ margin-bottom:.45rem; }
+.step p{ font-size:.99rem; color:var(--ink-soft); margin:0; }
+
+/* ============================================================
+   GALLERY
+   ============================================================ */
+.mosaic{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.mosaic figure{ margin:0; border-radius:10px; overflow:hidden; background:var(--tint); aspect-ratio:4/3; }
+.mosaic img{ width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
+.mosaic figure:hover img{ transform:scale(1.05); }
+@media (max-width:900px){ .mosaic{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:520px){ .mosaic{ grid-template-columns:1fr; } }
+
+/* ============================================================
+   WHY US (split)
+   ============================================================ */
+.split{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(1.8rem,4vw,3.5rem); align-items:center; }
+@media (max-width:900px){ .split{ grid-template-columns:1fr; } }
+.split-img{ border-radius:14px; overflow:hidden; background:var(--tint); }
+.split-img img{ width:100%; height:clamp(320px,42vw,540px); object-fit:cover; }
+.why-list{ list-style:none; margin:1.8rem 0 0; padding:0; display:grid; gap:1.2rem; }
+.why-list li{ display:flex; gap:1rem; align-items:flex-start; }
+.why-ico{
+  flex:none; width:44px; height:44px; border-radius:50%;
+  background:var(--tint); color:var(--brand);
+  display:flex; align-items:center; justify-content:center;
+}
+.why-ico svg{ width:21px; height:21px; }
+.why-list h3{ margin-bottom:.25rem; }
+.why-list p{ font-size:1.012rem; color:var(--ink-soft); margin:0; }
+
+/* ============================================================
+   REVIEWS
+   ============================================================ */
+.reviews{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
+.review{
+  background:var(--paper-2); border:1px solid var(--line); border-radius:14px;
+  padding:1.6rem 1.5rem; display:flex; flex-direction:column;
+}
+.review .stars{ margin-bottom:.9rem; }
+.review p{ font-size:1.045rem; color:var(--ink-soft); margin-bottom:1.2rem; }
+.review .who{ margin-top:auto; font-weight:600; font-size:1.012rem; }
+.review .src{ font-family:var(--mono); font-size:.726rem; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-faint); margin-top:.2rem; }
+
+/* ============================================================
+   CONTACT (contact info + map + form)
+   ============================================================ */
+#contact{ background:var(--brand-deep); }
+#contact h2{ color:#fff; }
+#contact .eyebrow{ color:#9FD3AE; }
+#contact .head-p{ color:#DCEBE0; }
+
+.contact-grid{
+  display:grid; grid-template-columns:1.05fr .95fr;
+  gap:clamp(1.2rem,2.4vw,1.8rem);
+  align-items:start;
+}
+@media (max-width:900px){ .contact-grid{ grid-template-columns:1fr; } }
+
+.contact-side{ display:flex; flex-direction:column; gap:10px; }
+.crow{
+  display:flex; align-items:center; gap:14px; text-decoration:none;
+  background:var(--paper-2); border:1px solid var(--line); border-radius:12px;
+  padding:1.05rem 1.2rem;
+  transition:transform .2s ease, border-color .2s ease;
+}
+.crow:hover{ transform:translateY(-2px); border-color:var(--brand); }
+.crow-ico{
+  flex:none; width:44px; height:44px; border-radius:50%;
+  background:var(--tint); color:var(--brand);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .2s ease, color .2s ease;
+}
+.crow:hover .crow-ico{ background:var(--brand); color:#fff; }
+.crow-ico svg{ width:20px; height:20px; }
+.crow-k{ display:block; font-family:var(--mono); font-size:.693rem; letter-spacing:.13em; text-transform:uppercase; color:var(--brand); }
+.crow-v{ display:block; font-size:1.1rem; font-weight:500; margin-top:.15rem; }
+.map{ border:0; width:100%; height:300px; border-radius:12px; margin-top:4px; }
+
+.form-card{
+  background:var(--paper-2); border:1px solid var(--line); border-radius:14px;
+  padding:clamp(1.5rem,3vw,2.2rem);
+}
+.form-card h3{ font-family:var(--display); font-weight:800; font-size:1.65rem; margin-bottom:.4rem; }
+.form-card .fc-sub{ font-size:1.012rem; color:var(--ink-soft); margin-bottom:1.4rem; }
+
+/* ============================================================
+   STICKY MOBILE CALL BAR
+   ============================================================ */
+.callbar{ display:none; }
+@media (max-width:760px){
+  .callbar{
+    display:flex; position:fixed; left:0; right:0; bottom:0; z-index:90;
+    background:var(--brand); box-shadow:0 -6px 20px rgba(0,0,0,.18);
+  }
+  .callbar a{
+    flex:1; text-align:center; padding:1rem .6rem;
+    color:#fff; text-decoration:none; font-weight:700; font-size:1.045rem;
+    display:flex; align-items:center; justify-content:center; gap:.45rem;
+  }
+  .callbar a svg{ width:18px; height:18px; }
+  .callbar a + a{ border-left:1px solid rgba(255,255,255,.28); background:var(--brand-deep); }
+  body{ padding-bottom:60px; }
+}
+
+/* ---------- Reveal on scroll ---------- */
+.rv{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+.rv.in{ opacity:1; transform:none; }
+
+@media (prefers-reduced-motion:reduce){
+  *{ animation:none !important; transition:none !important; }
+  html{ scroll-behavior:auto; }
+  .rv{ opacity:1; transform:none; }
+}
+
+/* ============================================================
+   CONTACT FORM 7 COMPATIBILITY
+   CF7 wraps every field in a <p>, which fights the .frow grid.
+   Build your CF7 form with the same .f2 / .frow wrappers used by
+   the fallback form and these few rules do the rest.
+   ============================================================ */
+.lead-card .wpcf7 form.wpcf7-form,
+.form-card .wpcf7 form.wpcf7-form{ margin:0; }
+.lead-card .frow p,
+.form-card .frow p,
+.lead-card .wpcf7-form > p,
+.form-card .wpcf7-form > p{ margin:0; }
+.lead-card .frow br,
+.form-card .frow br{ display:none; }
+.lead-card .wpcf7-form-control-wrap,
+.form-card .wpcf7-form-control-wrap{ display:block; }
+.lead-card .wpcf7-not-valid-tip,
+.form-card .wpcf7-not-valid-tip{ font-size:.792rem; color:#B3261E; margin-top:.3rem; display:block; }
+.lead-card .wpcf7-form-control.wpcf7-not-valid,
+.form-card .wpcf7-form-control.wpcf7-not-valid{ border-color:#B3261E; background:#FDF4F3; }
+.lead-card .wpcf7 .wpcf7-response-output,
+.form-card .wpcf7 .wpcf7-response-output{
+  margin:1rem 0 0; padding:.7rem .9rem; border-radius:8px;
+  font-size:.858rem; border-width:1px;
+}
+.lead-card .wpcf7-spinner,
+.form-card .wpcf7-spinner{ margin:.6rem auto 0; display:block; }
+/* CF7 renders the submit as an <input>, which cannot hold the arrow span.
+   Keep the fill, the glow and the lift; the arrow is dropped on these. */
+.lead-card input.wpcf7-submit,
+.form-card input.wpcf7-submit{
+  width:100%; justify-content:center;
+  padding:1.32rem 2.1rem;
+  border:0; border-radius:var(--r);
+  background:var(--brand); color:#fff;
+  font-family:var(--body); font-size:1.078rem; font-weight:700; letter-spacing:.01em;
+  cursor:pointer;
+  animation:atfGlow 4.2s ease-in-out infinite;
+  transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.lead-card input.wpcf7-submit:hover,
+.form-card input.wpcf7-submit:hover{
+  background:var(--brand-deep); transform:translateY(-2px); animation:none;
+  box-shadow:
+    0 0 26px -2px rgba(122,199,140,.75),
+    0 0 56px -4px rgba(44,110,63,.60),
+    0 18px 38px -14px rgba(27,68,40,.95);
+}
+
+/* ============================================================
+   THEME RESET
+   The parent theme styles headings, buttons and inputs globally.
+   These few rules stop it bleeding in if its stylesheet is still
+   enqueued on this template.
+   ============================================================ */
+body.atf-lp h1, body.atf-lp h2, body.atf-lp h3{ color:var(--ink); margin:0; }
+body.atf-lp p{ color:inherit; }
+body.atf-lp ul{ margin:0; padding:0; list-style:none; }
+body.atf-lp a{ text-decoration:none; }
+body.atf-lp #page, body.atf-lp .site-content, body.atf-lp .corp-container{
+  max-width:none; width:auto; margin:0; padding:0;
+}
+</style>
+</head>
+
+<body <?php body_class( 'atf-lp' ); ?>>
+<?php wp_body_open(); ?>
+
+<!-- ============================ HERO ============================ -->
+<header class="hero">
+	<?php if ( $atf_hero['image']['url'] ) : ?>
+		<img class="hero-bg" src="<?php echo esc_url( $atf_hero['image']['url'] ); ?>"
+		     alt="<?php echo esc_attr( $atf_hero['image']['alt'] ); ?>"
+		     <?php if ( $atf_hero['image']['w'] ) : ?>width="<?php echo esc_attr( $atf_hero['image']['w'] ); ?>" height="<?php echo esc_attr( $atf_hero['image']['h'] ); ?>"<?php endif; ?>
+		     fetchpriority="high" decoding="async">
+	<?php endif; ?>
+
+	<div class="hero-in">
+		<div class="wrap hero-grid">
+
+			<div>
+				<?php if ( $atf_hero['eyebrow'] ) : ?>
+					<p class="eyebrow"><?php echo wp_kses_post( $atf_hero['eyebrow'] ); ?></p>
+				<?php endif; ?>
+
+				<h1><?php echo wp_kses_post( $atf_hero['heading'] ); ?></h1>
+
+				<?php if ( $atf_hero['lede'] ) : ?>
+					<p class="hero-lede"><?php echo wp_kses_post( $atf_hero['lede'] ); ?></p>
+				<?php endif; ?>
+
+				<?php if ( $atf_ticks ) : ?>
+					<ul class="hero-ticks">
+						<?php foreach ( $atf_ticks as $tick ) : ?>
+							<li><?php echo $atf_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+								<span><?php echo wp_kses_post( $tick ); ?></span></li>
+						<?php endforeach; ?>
+					</ul>
+				<?php endif; ?>
+
+				<div class="hero-cta">
+					<a class="btn btn-primary btn-lg" href="#lead-form">
+						<?php echo wp_kses_post( $atf_hero['cta'] ); ?>
+						<span class="btn-arrow" aria-hidden="true"><?php echo $atf_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
+					</a>
+					<a class="btn btn-light btn-lg" href="<?php echo esc_url( $atf_tel ); ?>">
+						<?php echo $atf_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+						<?php echo esc_html( $atf_phone_txt ); ?>
+					</a>
+				</div>
+
+				<?php if ( $atf_hero['rating'] ) : ?>
+					<div class="hero-rating">
+						<?php echo atf_lp_stars(); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+						<span><?php echo wp_kses_post( $atf_hero['rating'] ); ?></span>
+					</div>
+				<?php endif; ?>
+			</div>
+
+			<div class="lead-card" id="lead-form">
+				<div class="lc-top">
+					<h2><?php echo wp_kses_post( $atf_hero['f_title'] ); ?></h2>
+					<?php if ( $atf_hero['f_sub'] ) : ?>
+						<p class="sub"><?php echo wp_kses_post( $atf_hero['f_sub'] ); ?></p>
+					<?php endif; ?>
+				</div>
+
+				<div class="lc-body">
+					<?php if ( $atf_hero['f_code'] ) : ?>
+						<?php echo do_shortcode( $atf_hero['f_code'] ); ?>
+					<?php else : ?>
+						<?php atf_lp_fallback_form( 'h', $atf_hero['cta'] ); ?>
+					<?php endif; ?>
+
+					<?php if ( $atf_hero['f_note'] ) : ?>
+						<p class="hf-note">
+							<?php echo wp_kses_post( $atf_hero['f_note'] ); ?>
+							<a href="<?php echo esc_url( $atf_tel ); ?>"><?php echo esc_html( $atf_phone_txt ); ?></a>
+						</p>
+					<?php endif; ?>
+
+					<?php atf_lp_thanks( $atf_thanks_t, $atf_thanks_x, $atf_tel, $atf_phone_txt ); ?>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</header>
+
+<!-- ============================ FACTS ============================ -->
+<?php if ( $atf_facts ) : ?>
+<div class="facts">
+	<div class="wrap">
+		<?php foreach ( $atf_facts as $fact ) : ?>
+			<div class="fact">
+				<span class="k"><?php echo wp_kses_post( $fact['k'] ); ?></span>
+				<span class="v"><?php echo wp_kses_post( $fact['v'] ); ?></span>
+			</div>
+		<?php endforeach; ?>
+	</div>
+</div>
+<?php endif; ?>
+
+<!-- ============================ VARIETIES ============================ -->
+<section id="varieties">
+	<div class="wrap">
+		<div class="head center rv">
+			<p class="eyebrow"><?php echo wp_kses_post( atf_lp_get( 'varieties_eyebrow', $atf_var['eyebrow'] ) ); ?></p>
+			<h2><?php echo wp_kses_post( atf_lp_get( 'varieties_heading', $atf_var['heading'] ) ); ?></h2>
+			<p class="head-p"><?php echo wp_kses_post( atf_lp_get( 'varieties_intro', $atf_var['intro'] ) ); ?></p>
+		</div>
+
+		<div class="variety-grid rv">
+			<?php foreach ( $atf_var_rows as $item ) :
+				$img  = atf_lp_image( isset( $item['image'] ) ? $item['image'] : '', '', isset( $item['title'] ) ? $item['title'] : '', 'medium_large' );
+				$href = ! empty( $item['link'] ) ? $item['link'] : '#lead-form';
+				?>
+				<article class="v-card">
+					<?php if ( $img['url'] ) : ?>
+						<div class="v-img">
+							<?php if ( ! empty( $item['tag'] ) ) : ?>
+								<span class="v-tag"><?php echo wp_kses_post( $item['tag'] ); ?></span>
+							<?php endif; ?>
+							<img src="<?php echo esc_url( $img['url'] ); ?>" alt="<?php echo esc_attr( $img['alt'] ); ?>" loading="lazy" decoding="async">
+						</div>
+					<?php endif; ?>
+					<div class="v-body">
+						<h3><?php echo wp_kses_post( $item['title'] ); ?></h3>
+						<p><?php echo wp_kses_post( $item['text'] ); ?></p>
+						<?php $specs = atf_lp_lines( isset( $item['specs'] ) ? $item['specs'] : '' ); ?>
+						<?php if ( $specs ) : ?>
+							<ul class="v-specs">
+								<?php foreach ( $specs as $spec ) : ?>
+									<li><?php echo $atf_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php echo wp_kses_post( $spec ); ?></li>
+								<?php endforeach; ?>
+							</ul>
+						<?php endif; ?>
+						<a class="v-link" href="<?php echo esc_url( $href ); ?>">Get a price &rarr;</a>
+					</div>
+				</article>
+			<?php endforeach; ?>
+		</div>
+	</div>
+</section>
+
+<!-- ============================ SERVICES ============================ -->
+<section id="services" class="band-white">
+	<div class="wrap">
+		<div class="head center rv">
+			<p class="eyebrow"><?php echo wp_kses_post( atf_lp_get( 'services_eyebrow', $atf_svc['eyebrow'] ) ); ?></p>
+			<h2><?php echo wp_kses_post( atf_lp_get( 'services_heading', $atf_svc['heading'] ) ); ?></h2>
+			<p class="head-p"><?php echo wp_kses_post( atf_lp_get( 'services_intro', $atf_svc['intro'] ) ); ?></p>
+		</div>
+
+		<div class="svc-grid rv">
+			<?php foreach ( $atf_svc_rows as $item ) : ?>
+				<div class="svc">
+					<div class="svc-ico"><?php echo $atf_icon( isset( $item['icon'] ) ? $item['icon'] : 'truck' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
+					<h3><?php echo wp_kses_post( $item['title'] ); ?></h3>
+					<p><?php echo wp_kses_post( $item['text'] ); ?></p>
+				</div>
+			<?php endforeach; ?>
+		</div>
+
+		<div style="display:flex; justify-content:center; margin-top:2.2rem;">
+			<a class="btn btn-primary btn-lg" href="#lead-form">
+				<?php echo wp_kses_post( atf_lp_get( 'services_cta_label', $atf_svc['cta_label'] ) ); ?>
+				<span class="btn-arrow" aria-hidden="true"><?php echo $atf_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
+			</a>
+		</div>
+	</div>
+</section>
+
+<!-- ============================ WHY US ============================ -->
+<section id="why">
+	<div class="wrap split rv">
+		<?php if ( $atf_why_img['url'] ) : ?>
+			<div class="split-img">
+				<img src="<?php echo esc_url( $atf_why_img['url'] ); ?>" alt="<?php echo esc_attr( $atf_why_img['alt'] ); ?>" loading="lazy" decoding="async">
+			</div>
+		<?php endif; ?>
+
+		<div>
+			<p class="eyebrow"><?php echo wp_kses_post( atf_lp_get( 'why_eyebrow', $atf_why['eyebrow'] ) ); ?></p>
+			<h2><?php echo wp_kses_post( atf_lp_get( 'why_heading', $atf_why['heading'] ) ); ?></h2>
+			<p class="head-p"><?php echo wp_kses_post( atf_lp_get( 'why_intro', $atf_why['intro'] ) ); ?></p>
+
+			<ul class="why-list">
+				<?php foreach ( $atf_why_rows as $item ) : ?>
+					<li>
+						<span class="why-ico"><?php echo $atf_icon( isset( $item['icon'] ) ? $item['icon'] : 'medal' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
+						<div>
+							<h3><?php echo wp_kses_post( $item['title'] ); ?></h3>
+							<p><?php echo wp_kses_post( $item['text'] ); ?></p>
+						</div>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+
+			<div style="margin-top:2rem;">
+				<a class="btn btn-primary btn-lg" href="#lead-form">
+					<?php echo wp_kses_post( atf_lp_get( 'why_cta_label', $atf_why['cta_label'] ) ); ?>
+					<span class="btn-arrow" aria-hidden="true"><?php echo $atf_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- ============================ HOW IT WORKS ============================ -->
+<section id="how" class="band-tint">
+	<div class="wrap">
+		<div class="head center rv">
+			<p class="eyebrow"><?php echo wp_kses_post( atf_lp_get( 'how_eyebrow', $atf_how['eyebrow'] ) ); ?></p>
+			<h2><?php echo wp_kses_post( atf_lp_get( 'how_heading', $atf_how['heading'] ) ); ?></h2>
+		</div>
+
+		<div class="steps rv">
+			<?php foreach ( $atf_how_rows as $i => $item ) : ?>
+				<div class="step">
+					<span class="n"><?php echo esc_html( str_pad( $i + 1, 2, '0', STR_PAD_LEFT ) ); ?></span>
+					<h3><?php echo wp_kses_post( $item['title'] ); ?></h3>
+					<p><?php echo wp_kses_post( $item['text'] ); ?></p>
+				</div>
+			<?php endforeach; ?>
+		</div>
+	</div>
+</section>
+
+<!-- ============================ GALLERY ============================ -->
+<section id="projects" class="band-white">
+	<div class="wrap">
+		<div class="head center rv">
+			<p class="eyebrow"><?php echo wp_kses_post( atf_lp_get( 'projects_eyebrow', $atf_prj['eyebrow'] ) ); ?></p>
+			<h2><?php echo wp_kses_post( atf_lp_get( 'projects_heading', $atf_prj['heading'] ) ); ?></h2>
+			<p class="head-p"><?php echo wp_kses_post( atf_lp_get( 'projects_intro', $atf_prj['intro'] ) ); ?></p>
+		</div>
+
+		<div class="mosaic rv">
+			<?php foreach ( $atf_gallery as $shot ) :
+				$img = atf_lp_image( $shot, '', 'Turf supplied and installed by Arrow Turf', 'large' );
+				if ( ! $img['url'] ) {
+					continue;
+				}
+				?>
+				<figure><img src="<?php echo esc_url( $img['url'] ); ?>" alt="<?php echo esc_attr( $img['alt'] ); ?>" loading="lazy" decoding="async"></figure>
+			<?php endforeach; ?>
+		</div>
+	</div>
+</section>
+
+<!-- ============================ REVIEWS ============================ -->
+<section id="reviews">
+	<div class="wrap">
+		<div class="head center rv">
+			<p class="eyebrow"><?php echo wp_kses_post( atf_lp_get( 'reviews_eyebrow', $atf_rev['eyebrow'] ) ); ?></p>
+			<h2><?php echo wp_kses_post( atf_lp_get( 'reviews_heading', $atf_rev['heading'] ) ); ?></h2>
+		</div>
+
+		<div class="reviews rv">
+			<?php foreach ( $atf_rev_rows as $item ) : ?>
+				<div class="review">
+					<?php echo atf_lp_stars( '5 out of 5 stars' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+					<p>&ldquo;<?php echo wp_kses_post( $item['quote'] ); ?>&rdquo;</p>
+					<span class="who"><?php echo wp_kses_post( $item['name'] ); ?></span>
+					<span class="src"><?php echo wp_kses_post( $item['source'] ); ?></span>
+				</div>
+			<?php endforeach; ?>
+		</div>
+	</div>
+</section>
+
+<!-- ============================ CONTACT ============================ -->
+<section id="contact">
+	<div class="wrap">
+		<div class="head center rv">
+			<p class="eyebrow"><?php echo wp_kses_post( atf_lp_get( 'contact_eyebrow', $atf_con['eyebrow'] ) ); ?></p>
+			<h2><?php echo wp_kses_post( atf_lp_get( 'contact_heading', $atf_con['heading'] ) ); ?></h2>
+			<p class="head-p"><?php echo wp_kses_post( atf_lp_get( 'contact_intro', $atf_con['intro'] ) ); ?></p>
+		</div>
+
+		<div class="contact-grid rv">
+
+			<div class="form-card">
+				<h3><?php echo wp_kses_post( atf_lp_get( 'contact_form_title', $atf_con['form_title'] ) ); ?></h3>
+				<p class="fc-sub"><?php echo wp_kses_post( atf_lp_get( 'contact_form_sub', $atf_con['form_sub'] ) ); ?></p>
+
+				<?php $atf_c_code = atf_lp_get( 'contact_form_shortcode', $atf_con['form_shortcode'] ); ?>
+				<?php if ( $atf_c_code ) : ?>
+					<?php echo do_shortcode( $atf_c_code ); ?>
+				<?php else : ?>
+					<?php atf_lp_fallback_form( 'c', atf_lp_get( 'hero_cta_label', $atf_d['hero']['cta_label'] ), true ); ?>
+				<?php endif; ?>
+
+				<?php $atf_c_note = atf_lp_get( 'contact_form_note', $atf_con['form_note'] ); ?>
+				<?php if ( $atf_c_note ) : ?>
+					<p class="fnote"><?php echo wp_kses_post( $atf_c_note ); ?></p>
+				<?php endif; ?>
+
+				<?php atf_lp_thanks( $atf_thanks_t, $atf_thanks_x, $atf_tel, $atf_phone_txt ); ?>
+			</div>
+
+			<div class="contact-side">
+				<?php foreach ( $atf_crows as $row ) :
+					$tag = ! empty( $row['url'] ) ? 'a' : 'div';
+					?>
+					<<?php echo esc_attr( $tag ); ?> class="crow"<?php if ( ! empty( $row['url'] ) ) : ?> href="<?php echo esc_url( $row['url'] ); ?>"<?php else : ?> style="cursor:default;"<?php endif; ?>>
+						<span class="crow-ico"><?php echo $atf_icon( $row['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
+						<span>
+							<span class="crow-k"><?php echo wp_kses_post( $row['label'] ); ?></span>
+							<span class="crow-v"><?php echo wp_kses_post( $row['value'] ); ?></span>
+						</span>
+					</<?php echo esc_attr( $tag ); ?>>
+				<?php endforeach; ?>
+
+				<?php $atf_map = atf_lp_get( 'contact_map_src', $atf_con['map_src'] ); ?>
+				<?php if ( $atf_map ) : ?>
+					<iframe class="map" title="Arrow Turf farm location" loading="lazy"
+					        referrerpolicy="no-referrer-when-downgrade"
+					        src="<?php echo esc_url( $atf_map ); ?>"></iframe>
+				<?php endif; ?>
+			</div>
+
+		</div>
+	</div>
+</section>
+
+<!-- ============================ STICKY MOBILE BAR ============================ -->
+<div class="callbar">
+	<a href="<?php echo esc_url( $atf_tel ); ?>">
+		<?php echo $atf_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+		<?php echo esc_html( atf_lp_get( 'callbar_call_label', $atf_d['callbar']['call_label'] ) ); ?>
+	</a>
+	<a href="#lead-form"><?php echo esc_html( atf_lp_get( 'callbar_cta_label', $atf_d['callbar']['cta_label'] ) ); ?></a>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* Reveal on scroll */
+  var revealables = document.querySelectorAll(".rv");
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { entry.target.classList.add("in"); io.unobserve(entry.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    revealables.forEach(function (el) { io.observe(el); });
+  } else {
+    revealables.forEach(function (el) { el.classList.add("in"); });
+  }
+
+  /* Validation for the built-in fallback forms only. Contact Form 7 does its
+     own validation and submission, and never carries the .atf-form class. */
+  var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  function clearError(field) {
+    var row = field.closest(".frow");
+    if (row) { row.classList.remove("has-err"); }
+    field.classList.remove("err");
+  }
+  function markError(field) {
+    var row = field.closest(".frow");
+    if (row) { row.classList.add("has-err"); }
+    field.classList.add("err");
+  }
+  function validate(form) {
+    var ok = true, first = null;
+    form.querySelectorAll("[required]").forEach(function (field) {
+      var value = field.value.trim(), valid = value !== "";
+      if (valid && field.type === "email") { valid = EMAIL.test(value); }
+      if (valid && field.type === "tel") { valid = value.replace(/[^0-9]/g, "").length >= 8; }
+      if (valid) { clearError(field); }
+      else { markError(field); ok = false; if (!first) { first = field; } }
+    });
+    if (first) { first.focus(); }
+    return ok;
+  }
+
+  document.querySelectorAll(".atf-form").forEach(function (form) {
+    form.addEventListener("input", function (e) {
+      if (e.target.classList.contains("err")) { clearError(e.target); }
+    });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (!validate(form)) { return; }
+      form.classList.add("sent");
+      var success = form.parentNode.querySelector(".form-success");
+      if (success) {
+        success.classList.add("on");
+        success.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    });
+  });
+})();
+</script>
+
+<?php wp_footer(); ?>
+</body>
+</html>
+<?php
+
+/* ---------------------------------------------------------------------------
+ * Fallback form and thank-you panel.
+ *
+ * Only used when no Contact Form 7 shortcode is set, so the page is never
+ * shipped without a visible form. It posts nowhere: wire up CF7 before this
+ * goes live on paid traffic.
+ * ------------------------------------------------------------------------ */
+
+if ( ! function_exists( 'atf_lp_fallback_form' ) ) :
+/**
+ * @param string $prefix     Unique id prefix, e.g. 'h' or 'c'.
+ * @param string $cta        Submit button label.
+ * @param bool   $with_extra Include the variety select and message textarea.
+ * @return void
+ */
+function atf_lp_fallback_form( $prefix, $cta, $with_extra = false ) {
+	$p = sanitize_html_class( $prefix );
+	?>
+	<form class="atf-form" novalidate>
+		<div class="f2">
+			<div class="frow">
+				<label for="<?php echo esc_attr( $p ); ?>-name">Your name <span class="req">*</span></label>
+				<input type="text" id="<?php echo esc_attr( $p ); ?>-name" name="name" autocomplete="name" required>
+				<span class="err-msg">Please enter your name.</span>
+			</div>
+			<div class="frow">
+				<label for="<?php echo esc_attr( $p ); ?>-phone">Phone <span class="req">*</span></label>
+				<input type="tel" id="<?php echo esc_attr( $p ); ?>-phone" name="phone" autocomplete="tel" required>
+				<span class="err-msg">Please enter a contact number.</span>
+			</div>
+		</div>
+		<div class="f2">
+			<div class="frow">
+				<label for="<?php echo esc_attr( $p ); ?>-email">Email <span class="req">*</span></label>
+				<input type="email" id="<?php echo esc_attr( $p ); ?>-email" name="email" autocomplete="email" required>
+				<span class="err-msg">Please enter a valid email address.</span>
+			</div>
+			<div class="frow">
+				<label for="<?php echo esc_attr( $p ); ?>-suburb">Suburb <span class="req">*</span></label>
+				<input type="text" id="<?php echo esc_attr( $p ); ?>-suburb" name="suburb" autocomplete="address-level2" required>
+				<span class="err-msg">Please enter your suburb.</span>
+			</div>
+		</div>
+		<div class="f2">
+			<div class="frow">
+				<label for="<?php echo esc_attr( $p ); ?>-area">Approx. area (m&sup2;)</label>
+				<input type="text" id="<?php echo esc_attr( $p ); ?>-area" name="area" inputmode="numeric" placeholder="e.g. 120">
+			</div>
+			<div class="frow">
+				<label for="<?php echo esc_attr( $p ); ?>-variety">Turf variety</label>
+				<select id="<?php echo esc_attr( $p ); ?>-variety" name="variety">
+					<option value="">Not sure, please advise</option>
+					<option>Sir Walter Soft Leaf Buffalo</option>
+					<option>Matilda Soft Leaf Buffalo</option>
+					<option>Kikuyu</option>
+					<option>Wintergreen Couch</option>
+					<option>Greenlees Park Couch</option>
+				</select>
+			</div>
+		</div>
+		<div class="frow">
+			<label for="<?php echo esc_attr( $p ); ?>-service">What do you need?</label>
+			<select id="<?php echo esc_attr( $p ); ?>-service" name="service">
+				<option value="">Select an option</option>
+				<option>Turf supplied &amp; installed</option>
+				<option>Turf delivered (supply only)</option>
+				<option>Pick up from the farm</option>
+				<option>Maxi roll turf</option>
+				<option>Not sure, please advise</option>
+			</select>
+		</div>
+		<?php if ( $with_extra ) : ?>
+			<div class="frow">
+				<label for="<?php echo esc_attr( $p ); ?>-message">Your project</label>
+				<textarea id="<?php echo esc_attr( $p ); ?>-message" name="message" placeholder="Anything else we should know about access, timing or site condition?"></textarea>
+			</div>
+		<?php endif; ?>
+		<button class="btn btn-primary btn-block<?php echo $with_extra ? ' btn-lg' : ''; ?>" type="submit">
+			<?php echo wp_kses_post( $cta ); ?>
+			<span class="btn-arrow" aria-hidden="true"><?php echo atf_lp_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
+		</button>
+	</form>
+	<?php
+}
+endif;
+
+if ( ! function_exists( 'atf_lp_thanks' ) ) :
+/**
+ * @param string $title     Heading.
+ * @param string $text      Body copy.
+ * @param string $tel       tel: link.
+ * @param string $phone_txt Phone number as displayed.
+ * @return void
+ */
+function atf_lp_thanks( $title, $text, $tel, $phone_txt ) {
+	?>
+	<div class="form-success" role="status" aria-live="polite">
+		<div class="tick"><?php echo atf_lp_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
+		<h3><?php echo wp_kses_post( $title ); ?></h3>
+		<p><?php echo wp_kses_post( $text ); ?>
+			Need it sooner? Call us on <a href="<?php echo esc_url( $tel ); ?>"><?php echo esc_html( $phone_txt ); ?></a>.</p>
+	</div>
+	<?php
+}
+endif;
