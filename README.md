@@ -16,9 +16,8 @@ no dependencies beyond Google Fonts.
 | 6 | How it works | Four-step process — removes friction before the enquiry |
 | 7 | Recent work | Six-image project gallery |
 | 8 | Reviews | Three Google reviews, 5-star |
-| 9 | CTA strip | Full-width conversion prompt |
-| 10 | FAQ | Six objection-handling questions |
-| 11 | Contact | Enquiry form + contact details + Google Map |
+| 9 | FAQ | Six objection-handling questions |
+| 10 | Contact | Enquiry form + contact details + Google Map |
 
 No site header or footer by design — the page keeps ad traffic focused on
 the two conversion actions: **submit the form** or **call the farm**.
@@ -29,6 +28,7 @@ the two conversion actions: **submit the form** or **call the farm**.
 - Primary CTA text is `BOOK YOUR CONSULTATION HERE` throughout, in `--clay` so it
   stands out against the green brand palette.
 - Every CTA either scrolls to a form (`#lead-form` / `#contact`) or dials `tel:0490779707`.
+- Base font size is 18.7px; every `font-size` in the stylesheet is set from that same 110% scale.
 - Sticky call/enquire bar pinned to the bottom on screens ≤760px.
 - Both forms share client-side validation, inline error states and an inline
   thank-you panel — no page reload, so the conversion event stays on this page.
