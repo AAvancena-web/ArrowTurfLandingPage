@@ -187,7 +187,7 @@ body{
 .band-tint{ background:var(--tint); }
 
 /* ---------- Buttons ---------- */
-.btn{
+.atf-lp-page .btn{
   display:inline-flex; align-items:center; justify-content:center; gap:14px;
   cursor:pointer; text-decoration:none; text-align:center;
   font-family:var(--body); font-size:17.6px; font-weight:700;
@@ -197,14 +197,14 @@ body{
   border:1.5px solid transparent;
   transition:transform .25s ease, box-shadow .25s ease, color .35s ease, background .25s ease;
 }
-.btn:active{ transform:translateY(1px); }
-.btn svg{ flex:none; width:20px; height:20px; }
+.atf-lp-page .btn:active{ transform:translateY(1px); }
+.atf-lp-page .btn svg{ flex:none; width:20px; height:20px; }
 
-.btn-light{ background:#fff; color:var(--ink); border-color:#fff; }
-.btn-light:hover{ background:var(--tint); border-color:var(--tint); transform:translateY(-2px); }
+.atf-lp-page .btn-light{ background:#fff; color:var(--ink); border-color:#fff; }
+.atf-lp-page .btn-light:hover{ background:var(--tint); border-color:var(--tint); transform:translateY(-2px); }
 
-.btn-ghost{ background:transparent; color:var(--ink); border-color:var(--ink); }
-.btn-ghost:hover{ background:var(--ink); color:#fff; }
+.atf-lp-page .btn-ghost{ background:transparent; color:var(--ink); border-color:var(--ink); }
+.atf-lp-page .btn-ghost:hover{ background:var(--ink); color:#fff; }
 
 /* ============================================================
    PRIMARY CTA
@@ -213,7 +213,7 @@ body{
    Hover: the gradient retracts into the arrow circle, revealing
    the white pill underneath, and the label turns green.
    ============================================================ */
-.btn-primary{
+.atf-lp-page .btn-primary{
   position:relative; isolation:isolate; overflow:hidden;
   justify-content:space-between;
   background:#fff; color:#fff;
@@ -235,7 +235,7 @@ body{
     0 0 62px -3px rgba(44,110,63,.62),
     0 14px 34px -12px rgba(27,68,40,.92); }
 }
-.btn-primary::before{
+.atf-lp-page .btn-primary::before{
   content:""; position:absolute; z-index:-1;
   /* overshoot so the button's own overflow:hidden defines the edge; matching
      the two rounded rects exactly leaves an antialiased white fringe */
@@ -245,16 +245,16 @@ body{
              right .5s cubic-bezier(.65,.05,.25,1), bottom .5s cubic-bezier(.65,.05,.25,1),
              border-radius .5s cubic-bezier(.65,.05,.25,1);
 }
-.btn-primary:hover,
-.btn-primary:focus-visible{
+.atf-lp-page .btn-primary:hover,
+.atf-lp-page .btn-primary:focus-visible{
   color:var(--brand); transform:translateY(-2px); animation:none;
   box-shadow:
     0 0 26px -2px rgba(122,199,140,.75),
     0 0 56px -4px rgba(44,110,63,.60),
     0 18px 38px -14px rgba(27,68,40,.95);
 }
-.btn-primary:hover::before,
-.btn-primary:focus-visible::before{
+.atf-lp-page .btn-primary:hover::before,
+.atf-lp-page .btn-primary:focus-visible::before{
   /* 46px square centred on the arrow, whatever height the button ends up:
      deriving it from the padding made it an ellipse as soon as the label wrapped */
   left:calc(100% - 55.5px); right:9.5px;
@@ -262,29 +262,29 @@ body{
   border-radius:50%;
 }
 
-.btn-arrow{
+.atf-lp-page .btn-arrow{
   width:46px; height:46px; border-radius:50%; flex:none;
   display:grid; place-items:center; color:#fff;
 }
-.btn-arrow svg{ width:18px; height:18px; transition:transform .4s cubic-bezier(.65,.05,.25,1); }
-.btn-primary:hover .btn-arrow svg{ transform:translateX(2px); }
+.atf-lp-page .btn-arrow svg{ width:18px; height:18px; transition:transform .4s cubic-bezier(.65,.05,.25,1); }
+.atf-lp-page .btn-primary:hover .btn-arrow svg{ transform:translateX(2px); }
 
-.btn-block{ width:100%; }
-.btn-lg{ font-size:18.656px; }
-.btn-lg:not(.btn-primary){ padding:19.2px 33.6px; }
+.atf-lp-page .btn-block{ width:100%; }
+.atf-lp-page .btn-lg{ font-size:18.656px; }
+.atf-lp-page .btn-lg:not(.btn-primary){ padding:19.2px 33.6px; }
 
 /* Long CTA copy needs room to breathe on narrow screens */
 @media (max-width:560px){
-  .btn{ font-size:16.192px; gap:10px; }
-  .btn-lg:not(.btn-primary){ padding:16px 19.2px; }
-  .btn-primary{ padding:8.5px 8.5px 8.5px 23.5px; }
-  .btn-primary:hover::before,
-  .btn-primary:focus-visible::before{
+  .atf-lp-page .btn{ font-size:16.192px; gap:10px; }
+  .atf-lp-page .btn-lg:not(.btn-primary){ padding:16px 19.2px; }
+  .atf-lp-page .btn-primary{ padding:8.5px 8.5px 8.5px 23.5px; }
+  .atf-lp-page .btn-primary:hover::before,
+  .atf-lp-page .btn-primary:focus-visible::before{
     left:calc(100% - 48.5px); right:8.5px;
     top:calc(50% - 20px); bottom:calc(50% - 20px);
     border-radius:50%;
   }
-  .btn-arrow{ width:40px; height:40px; }
+  .atf-lp-page .btn-arrow{ width:40px; height:40px; }
 }
 
 /* ============================================================
@@ -641,7 +641,7 @@ form.sent{ display:none; }
    row and, fatally, between the submit and its arrow span, stacking them. */
 .lead-card .wpcf7-form br,
 .form-card .wpcf7-form br{ display:none; }
-.cf7-submit p{ display:contents; margin:0; }
+.atf-lp-page .cf7-submit p{ display:contents; margin:0; }
 .lead-card .wpcf7-form-control-wrap,
 .form-card .wpcf7-form-control-wrap{ display:block; }
 .lead-card .wpcf7-not-valid-tip,
@@ -694,7 +694,7 @@ form.sent{ display:none; }
    vanish. The wrapper becomes the button instead: it carries the fill,
    the glow, the retract and the arrow, and the input sits inside as
    nothing but the label text. */
-.cf7-submit{
+.atf-lp-page .cf7-submit{
   position:relative; isolation:isolate; overflow:hidden;
   display:flex; align-items:center; justify-content:space-between; gap:14px;
   width:100%; margin-top:6.4px;
@@ -709,7 +709,7 @@ form.sent{ display:none; }
   animation:atfGlow 4.2s ease-in-out infinite;
   transition:transform .25s ease, box-shadow .25s ease;
 }
-.cf7-submit::before{
+.atf-lp-page .cf7-submit::before{
   content:""; position:absolute; z-index:-1;
   top:-2px; right:-2px; bottom:-2px; left:-2px;
   background:var(--brand); border-radius:calc(var(--r) + 2px);
@@ -717,16 +717,16 @@ form.sent{ display:none; }
              right .5s cubic-bezier(.65,.05,.25,1), bottom .5s cubic-bezier(.65,.05,.25,1),
              border-radius .5s cubic-bezier(.65,.05,.25,1);
 }
-.cf7-submit:hover,
-.cf7-submit:focus-within{
+.atf-lp-page .cf7-submit:hover,
+.atf-lp-page .cf7-submit:focus-within{
   transform:translateY(-2px); animation:none;
   box-shadow:
     0 0 26px -2px rgba(122,199,140,.75),
     0 0 56px -4px rgba(44,110,63,.60),
     0 18px 38px -14px rgba(27,68,40,.95);
 }
-.cf7-submit:hover::before,
-.cf7-submit:focus-within::before{
+.atf-lp-page .cf7-submit:hover::before,
+.atf-lp-page .cf7-submit:focus-within::before{
   /* 46px square centred on the arrow, whatever height the button ends up:
      deriving it from the padding made it an ellipse as soon as the label wrapped */
   left:calc(100% - 55.5px); right:9.5px;
@@ -747,21 +747,21 @@ form.sent{ display:none; }
 .form-card .cf7-submit:hover input.wpcf7-submit{
   color:var(--brand); background:none; transform:none;
 }
-.cf7-submit:hover .btn-arrow svg{ transform:translateX(2px); }
+.atf-lp-page .cf7-submit:hover .btn-arrow svg{ transform:translateX(2px); }
 .lead-card .cf7-submit .wpcf7-spinner,
 .form-card .cf7-submit .wpcf7-spinner{
   position:absolute; right:64px; top:50%; transform:translateY(-50%); margin:0;
 }
 @media (max-width:560px){
-  .cf7-submit{ padding:8.5px 8.5px 8.5px 23.5px; }
-  .cf7-submit:hover::before,
-  .cf7-submit:focus-within::before{
+  .atf-lp-page .cf7-submit{ padding:8.5px 8.5px 8.5px 23.5px; }
+  .atf-lp-page .cf7-submit:hover::before,
+  .atf-lp-page .cf7-submit:focus-within::before{
     left:calc(100% - 48.5px); right:8.5px;
     top:calc(50% - 20px); bottom:calc(50% - 20px);
   }
   .lead-card .cf7-submit input.wpcf7-submit,
   .form-card .cf7-submit input.wpcf7-submit{ font-size:16.192px; }
-  .cf7-submit .btn-arrow{ width:40px; height:40px; }
+  .atf-lp-page .cf7-submit .btn-arrow{ width:40px; height:40px; }
 }
 
 /* ============================================================
@@ -807,9 +807,19 @@ body.atf-lp{ background:var(--paper); }
    width-limited. Our sections run full bleed and handle their own gutters.
    Scoped to #content so the header and footer keep their own containers. */
 body.atf-lp #content,
-body.atf-lp #content > .corp-container,
+body.atf-lp #content .corp-container,
 body.atf-lp #content .site-content{
   max-width:none; width:auto; margin:0; padding:0;
+}
+/* Same again keyed on :has(), so a missing body class cannot leave the
+   page trapped in the theme's 87.8%-wide .corp-container. Only containers
+   that actually hold this page match, so the header and footer keep theirs. */
+#content:has(.atf-lp-page),
+.site-content:has(.atf-lp-page),
+.corp-container:has(.atf-lp-page){
+  max-width:none; width:auto;
+  margin-left:0; margin-right:0;
+  padding-left:0; padding-right:0;
 }
 
 /* ============================================================
@@ -820,7 +830,7 @@ body.atf-lp #content .site-content{
    outrank this page's:
 
      .hero-cta .btn { justify-content:center; ... }   (0,2,0)
-     .btn-primary   { color:#fff !important }
+     .atf-lp-page .btn-primary{ color:#fff !important }
 
    The first centred the banner CTA's label and arrow while the fill
    still collapsed to the right edge, so the arrow sat off the circle.
@@ -837,8 +847,16 @@ body.atf-lp #content .site-content{
   font-size:18.656px;
   letter-spacing:.01em;
 }
+/* A :hover pseudo-class carries class weight, so the child theme's
+   .atf-lp-page .btn-primary:hover{ background:var(--ink) } at (0,2,0) outranks this
+   page's base .btn-primary at (0,1,0) and the pill revealed under the
+   retracting fill comes back dark green. */
+.atf-lp-page .btn-primary{
+  background:#fff;
+}
 .atf-lp-page .btn-primary:hover,
 .atf-lp-page .btn-primary:focus-visible{
+  background:#fff;
   color:var(--brand) !important;
 }
 .atf-lp-page .hero-cta .btn-primary:hover,
