@@ -129,10 +129,7 @@ add_action( 'wp_head', function () {
 /* Desktop / laptop caps at 1440px, larger screens open up to 1880px */
 @media (min-width:1700px){ :root{ --wrap:1880px; } }
 
-.atf-lp-page,
- .atf-lp-page *,
- .atf-lp-page *::before,
- .atf-lp-page *::after{ box-sizing:border-box; }
+.atf-lp-page, .atf-lp-page *, .atf-lp-page *::before, .atf-lp-page *::after{ box-sizing:border-box; }
 
 html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
 
@@ -153,11 +150,8 @@ body{
 .atf-lp-page a{ color:inherit; }
 
 .atf-lp-page h1,
-,
 .atf-lp-page h2,
-,
 .atf-lp-page h3,
-,
 .atf-lp-page h4{
   font-family:var(--display);
   overflow-wrap:break-word;
@@ -171,12 +165,12 @@ body{
 .atf-lp-page p{ margin:0 0 16px; }
 .atf-lp-page p:last-child{ margin-bottom:0; }
 
-.atf-lp-page .wrap{ max-width:var(--wrap); margin:0 auto; padding:0 24px; }
+.wrap{ max-width:var(--wrap); margin:0 auto; padding:0 24px; }
 @media (max-width:640px){ .wrap{ padding:0 20px; } }
 
 .atf-lp-page section{ padding:clamp(48px,5.5vw,80px) 0; }
 
-.atf-lp-page .eyebrow{
+.eyebrow{
   font-family:var(--mono);
   font-size:12.672px;
   letter-spacing:.15em;
@@ -185,15 +179,15 @@ body{
   margin:0 0 12.8px;
 }
 
-.atf-lp-page .head{ max-width:70ch; }
-.atf-lp-page .head.center{ margin:0 auto clamp(32px,4vw,48px); text-align:center; }
-.atf-lp-page .head-p{ color:var(--ink-soft); font-size:clamp(17.6px,1.485vw,19.888px); margin:14.4px 0 0; }
+.head{ max-width:70ch; }
+.head.center{ margin:0 auto clamp(32px,4vw,48px); text-align:center; }
+.head-p{ color:var(--ink-soft); font-size:clamp(17.6px,1.485vw,19.888px); margin:14.4px 0 0; }
 
-.atf-lp-page .band-white{ background:var(--paper-2); }
-.atf-lp-page .band-tint{ background:var(--tint); }
+.band-white{ background:var(--paper-2); }
+.band-tint{ background:var(--tint); }
 
 /* ---------- Buttons ---------- */
-.atf-lp-page .btn{
+.btn{
   display:inline-flex; align-items:center; justify-content:center; gap:14px;
   cursor:pointer; text-decoration:none; text-align:center;
   font-family:var(--body); font-size:17.6px; font-weight:700;
@@ -203,14 +197,14 @@ body{
   border:1.5px solid transparent;
   transition:transform .25s ease, box-shadow .25s ease, color .35s ease, background .25s ease;
 }
-.atf-lp-page .btn:active{ transform:translateY(1px); }
-.atf-lp-page .btn svg{ flex:none; width:20px; height:20px; }
+.btn:active{ transform:translateY(1px); }
+.btn svg{ flex:none; width:20px; height:20px; }
 
-.atf-lp-page .btn-light{ background:#fff; color:var(--ink); border-color:#fff; }
-.atf-lp-page .btn-light:hover{ background:var(--tint); border-color:var(--tint); transform:translateY(-2px); }
+.btn-light{ background:#fff; color:var(--ink); border-color:#fff; }
+.btn-light:hover{ background:var(--tint); border-color:var(--tint); transform:translateY(-2px); }
 
-.atf-lp-page .btn-ghost{ background:transparent; color:var(--ink); border-color:var(--ink); }
-.atf-lp-page .btn-ghost:hover{ background:var(--ink); color:#fff; }
+.btn-ghost{ background:transparent; color:var(--ink); border-color:var(--ink); }
+.btn-ghost:hover{ background:var(--ink); color:#fff; }
 
 /* ============================================================
    PRIMARY CTA
@@ -219,7 +213,7 @@ body{
    Hover: the gradient retracts into the arrow circle, revealing
    the white pill underneath, and the label turns green.
    ============================================================ */
-.atf-lp-page .btn-primary{
+.btn-primary{
   position:relative; isolation:isolate; overflow:hidden;
   justify-content:space-between;
   background:#fff; color:#fff;
@@ -241,7 +235,7 @@ body{
     0 0 62px -3px rgba(44,110,63,.62),
     0 14px 34px -12px rgba(27,68,40,.92); }
 }
-.atf-lp-page .btn-primary::before{
+.btn-primary::before{
   content:""; position:absolute; z-index:-1;
   /* overshoot so the button's own overflow:hidden defines the edge; matching
      the two rounded rects exactly leaves an antialiased white fringe */
@@ -251,18 +245,16 @@ body{
              right .5s cubic-bezier(.65,.05,.25,1), bottom .5s cubic-bezier(.65,.05,.25,1),
              border-radius .5s cubic-bezier(.65,.05,.25,1);
 }
-.atf-lp-page .btn-primary:hover,
-,
-.atf-lp-page .btn-primary:focus-visible{
+.btn-primary:hover,
+.btn-primary:focus-visible{
   color:var(--brand); transform:translateY(-2px); animation:none;
   box-shadow:
     0 0 26px -2px rgba(122,199,140,.75),
     0 0 56px -4px rgba(44,110,63,.60),
     0 18px 38px -14px rgba(27,68,40,.95);
 }
-.atf-lp-page .btn-primary:hover::before,
-,
-.atf-lp-page .btn-primary:focus-visible::before{
+.btn-primary:hover::before,
+.btn-primary:focus-visible::before{
   /* 46px square centred on the arrow, whatever height the button ends up:
      deriving it from the padding made it an ellipse as soon as the label wrapped */
   left:calc(100% - 55.5px); right:9.5px;
@@ -270,43 +262,42 @@ body{
   border-radius:50%;
 }
 
-.atf-lp-page .btn-arrow{
+.btn-arrow{
   width:46px; height:46px; border-radius:50%; flex:none;
   display:grid; place-items:center; color:#fff;
 }
-.atf-lp-page .btn-arrow svg{ width:18px; height:18px; transition:transform .4s cubic-bezier(.65,.05,.25,1); }
-.atf-lp-page .btn-primary:hover .btn-arrow svg{ transform:translateX(2px); }
+.btn-arrow svg{ width:18px; height:18px; transition:transform .4s cubic-bezier(.65,.05,.25,1); }
+.btn-primary:hover .btn-arrow svg{ transform:translateX(2px); }
 
-.atf-lp-page .btn-block{ width:100%; }
-.atf-lp-page .btn-lg{ font-size:18.656px; }
-.atf-lp-page .btn-lg:not(.btn-primary){ padding:19.2px 33.6px; }
+.btn-block{ width:100%; }
+.btn-lg{ font-size:18.656px; }
+.btn-lg:not(.btn-primary){ padding:19.2px 33.6px; }
 
 /* Long CTA copy needs room to breathe on narrow screens */
 @media (max-width:560px){
-  .atf-lp-page .btn{ font-size:16.192px; gap:10px; }
-  .atf-lp-page .btn-lg:not(.btn-primary){ padding:16px 19.2px; }
-  .atf-lp-page .btn-primary{ padding:8.5px 8.5px 8.5px 23.5px; }
-  .atf-lp-page .btn-primary:hover::before,
-,
-  .atf-lp-page .btn-primary:focus-visible::before{
+  .btn{ font-size:16.192px; gap:10px; }
+  .btn-lg:not(.btn-primary){ padding:16px 19.2px; }
+  .btn-primary{ padding:8.5px 8.5px 8.5px 23.5px; }
+  .btn-primary:hover::before,
+  .btn-primary:focus-visible::before{
     left:calc(100% - 48.5px); right:8.5px;
     top:calc(50% - 20px); bottom:calc(50% - 20px);
     border-radius:50%;
   }
-  .atf-lp-page .btn-arrow{ width:40px; height:40px; }
+  .btn-arrow{ width:40px; height:40px; }
 }
 
 /* ============================================================
    HERO: copy + CTA left, lead form right
    ============================================================ */
-.atf-lp-page .hero{ position:relative; overflow:hidden; background:var(--brand-deep); }
-.atf-lp-page .hero-bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-.atf-lp-page .hero::after{
+.hero{ position:relative; overflow:hidden; background:var(--brand-deep); }
+.hero-bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.hero::after{
   content:""; position:absolute; inset:0;
   background:linear-gradient(100deg, rgba(11,26,16,.90) 0%, rgba(11,26,16,.74) 45%, rgba(11,26,16,.52) 100%);
 }
-.atf-lp-page .hero-in{ position:relative; z-index:2; padding:clamp(40px,5vw,72px) 0; }
-.atf-lp-page .hero-grid{
+.hero-in{ position:relative; z-index:2; padding:clamp(40px,5vw,72px) 0; }
+.hero-grid{
   display:grid;
   grid-template-columns:1.08fr .92fr;
   gap:clamp(32px,4vw,56px);
@@ -314,69 +305,67 @@ body{
 }
 @media (max-width:1000px){ .hero-grid{ grid-template-columns:1fr; gap:32px; } }
 
-.atf-lp-page .hero .eyebrow{ color:#9FD3AE; }
-.atf-lp-page .hero h1{
+.hero .eyebrow{ color:#9FD3AE; }
+.hero h1{
   color:#fff;
   font-size:clamp(37.84px,4.73vw,65.12px);
   max-width:17ch;
 }
-.atf-lp-page .hero-lede{
+.hero-lede{
   color:#DCEBE0;
   font-size:clamp(18.128px,1.485vw,21.12px);
   max-width:52ch;
   margin:18.4px 0 0;
 }
 
-.atf-lp-page .hero-ticks{ list-style:none; margin:25.6px 0 0; padding:0; display:grid; gap:9.6px; max-width:46ch; }
-.atf-lp-page .hero-ticks li{ display:flex; align-items:flex-start; gap:10.4px; color:#fff; font-size:17.6px; font-weight:500; }
-.atf-lp-page .hero-ticks svg{ flex:none; width:20px; height:20px; margin-top:2px; color:#9FD3AE; }
+.hero-ticks{ list-style:none; margin:25.6px 0 0; padding:0; display:grid; gap:9.6px; max-width:46ch; }
+.hero-ticks li{ display:flex; align-items:flex-start; gap:10.4px; color:#fff; font-size:17.6px; font-weight:500; }
+.hero-ticks svg{ flex:none; width:20px; height:20px; margin-top:2px; color:#9FD3AE; }
 
-.atf-lp-page .hero-cta{ display:flex; flex-wrap:wrap; gap:12.8px; margin-top:32px; }
-.atf-lp-page .hero-cta .btn{ min-width:250px; }
+.hero-cta{ display:flex; flex-wrap:wrap; gap:12.8px; margin-top:32px; }
+.hero-cta .btn{ min-width:250px; }
 @media (max-width:560px){
-  .atf-lp-page .hero-cta{ flex-direction:column; }
-  .atf-lp-page .hero-cta .btn{ min-width:0; width:100%; }
+  .hero-cta{ flex-direction:column; }
+  .hero-cta .btn{ min-width:0; width:100%; }
 }
 
-.atf-lp-page .hero-rating{
+.hero-rating{
   display:flex; align-items:center; gap:11.2px;
   margin-top:25.6px; color:#DCEBE0; font-size:16.192px;
 }
-.atf-lp-page .stars{ display:inline-flex; gap:2px; color:#F5B60D; }
-.atf-lp-page .stars svg{ width:17px; height:17px; }
+.stars{ display:inline-flex; gap:2px; color:#F5B60D; }
+.stars svg{ width:17px; height:17px; }
 
 /* ---------- Lead form card ---------- */
-.atf-lp-page .lead-card{
+.lead-card{
   background:var(--paper-2);
   border-radius:14px;
   overflow:hidden;
   box-shadow:0 24px 60px rgba(0,0,0,.32);
 }
-.atf-lp-page .lead-card .lc-top{
+.lead-card .lc-top{
   background:var(--brand);
   color:#fff;
   padding:18.4px 24px;
   text-align:center;
 }
-.atf-lp-page .lead-card .lc-top h2{ font-size:26.4px; color:#fff; }
-.atf-lp-page .lead-card .lc-top .sub{
+.lead-card .lc-top h2{ font-size:26.4px; color:#fff; }
+.lead-card .lc-top .sub{
   font-family:var(--mono); font-size:12.672px; letter-spacing:.13em; text-transform:uppercase;
   color:#BFE0C8; margin:7.2px 0 0;
 }
-.atf-lp-page .lead-card .lc-body{ padding:24px; }
+.lead-card .lc-body{ padding:24px; }
 
-.atf-lp-page .f2{ display:grid; grid-template-columns:1fr 1fr; gap:13.6px; }
+.f2{ display:grid; grid-template-columns:1fr 1fr; gap:13.6px; }
 @media (max-width:440px){ .f2{ grid-template-columns:1fr; } }
 
-.atf-lp-page .frow{ margin-bottom:13.6px; }
-.atf-lp-page .frow label{
+.frow{ margin-bottom:13.6px; }
+.frow label{
   display:block; font-size:13.728px; font-weight:600; color:var(--ink-soft);
   margin-bottom:5.6px; letter-spacing:.01em;
 }
-.atf-lp-page .frow label .req{ color:var(--clay); }
-.atf-lp-page .frow input,
-.atf-lp-page .frow select,
-.atf-lp-page .frow textarea{
+.frow label .req{ color:var(--clay); }
+.frow input,.frow select,.frow textarea{
   width:100%;
   font-family:var(--body); font-size:17.6px; color:var(--ink);
   padding:12.8px 14.4px;
@@ -386,74 +375,70 @@ body{
   transition:border-color .15s ease, box-shadow .15s ease;
   -webkit-appearance:none; appearance:none;
 }
-.atf-lp-page .frow select{
+.frow select{
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A5C50' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-repeat:no-repeat; background-position:right 12.8px center; background-size:16px;
   padding-right:38.4px;
 }
-.atf-lp-page .frow textarea{ min-height:92px; resize:vertical; }
-.atf-lp-page .frow input:focus,
-.atf-lp-page .frow select:focus,
-.atf-lp-page .frow textarea:focus{
+.frow textarea{ min-height:92px; resize:vertical; }
+.frow input:focus,.frow select:focus,.frow textarea:focus{
   outline:0; border-color:var(--brand); box-shadow:0 0 0 3px rgba(44,110,63,.14);
 }
-.atf-lp-page .frow input.err,
-.atf-lp-page .frow select.err,
-.atf-lp-page .frow textarea.err{ border-color:#B3261E; background:#FDF4F3; }
-.atf-lp-page .err-msg{ display:none; font-size:13.376px; color:#B3261E; margin-top:4.8px; }
-.atf-lp-page .frow.has-err .err-msg{ display:block; }
+.frow input.err,.frow select.err,.frow textarea.err{ border-color:#B3261E; background:#FDF4F3; }
+.err-msg{ display:none; font-size:13.376px; color:#B3261E; margin-top:4.8px; }
+.frow.has-err .err-msg{ display:block; }
 
-.atf-lp-page .fnote{ font-size:13.728px; color:var(--ink-faint); text-align:center; margin:14.4px 0 0; }
-.atf-lp-page .fnote a{ color:var(--brand); font-weight:600; text-decoration:none; }
-.atf-lp-page .fnote a:hover{ text-decoration:underline; }
+.fnote{ font-size:13.728px; color:var(--ink-faint); text-align:center; margin:14.4px 0 0; }
+.fnote a{ color:var(--brand); font-weight:600; text-decoration:none; }
+.fnote a:hover{ text-decoration:underline; }
 
-.atf-lp-page .form-success{
+.form-success{
   display:none;
   text-align:center;
   padding:24px 8px;
 }
-.atf-lp-page .form-success.on{ display:block; }
-.atf-lp-page .form-success .tick{
+.form-success.on{ display:block; }
+.form-success .tick{
   width:58px; height:58px; border-radius:50%;
   background:var(--tint); color:var(--brand);
   display:flex; align-items:center; justify-content:center;
   margin:0 auto 16px;
 }
-.atf-lp-page .form-success .tick svg{ width:28px; height:28px; }
-.atf-lp-page .form-success h3{ font-family:var(--display); font-size:24.64px; font-weight:800; margin-bottom:8px; }
-.atf-lp-page .form-success p{ color:var(--ink-soft); font-size:16.72px; }
-.atf-lp-page form.sent{ display:none; }
+.form-success .tick svg{ width:28px; height:28px; }
+.form-success h3{ font-family:var(--display); font-size:24.64px; font-weight:800; margin-bottom:8px; }
+.form-success p{ color:var(--ink-soft); font-size:16.72px; }
+form.sent{ display:none; }
 
 /* ============================================================
    FACTS BAR
    ============================================================ */
-.atf-lp-page .facts{ background:var(--ink); color:#fff; }
-.atf-lp-page .facts .wrap{
+.facts{ background:var(--ink); color:#fff; }
+.facts .wrap{
   display:grid; grid-template-columns:repeat(4,1fr);
   padding-top:clamp(25.6px,3vw,36.8px); padding-bottom:clamp(25.6px,3vw,36.8px);
 }
-.atf-lp-page .fact{ text-align:center; padding:3.2px clamp(9.6px,1.6vw,25.6px); border-right:1px solid rgba(255,255,255,.15); }
-.atf-lp-page .fact:last-child{ border-right:0; }
-.atf-lp-page .fact .k{
+.fact{ text-align:center; padding:3.2px clamp(9.6px,1.6vw,25.6px); border-right:1px solid rgba(255,255,255,.15); }
+.fact:last-child{ border-right:0; }
+.fact .k{
   display:block; font-family:var(--display); font-weight:800;
   font-size:clamp(23.76px,2.31vw,33.44px); letter-spacing:-.025em; line-height:1.15; color:#fff;
 }
-.atf-lp-page .fact .v{ display:block; font-size:clamp(14.608px,1.1vw,16.72px); color:#9FD3AE; margin-top:5.6px; }
+.fact .v{ display:block; font-size:clamp(14.608px,1.1vw,16.72px); color:#9FD3AE; margin-top:5.6px; }
 @media (max-width:820px){
-  .atf-lp-page .facts .wrap{ grid-template-columns:1fr 1fr; gap:22.4px 0; }
-  .atf-lp-page .fact{ border-right:0; }
-  .atf-lp-page .fact:nth-child(odd){ border-right:1px solid rgba(255,255,255,.15); }
+  .facts .wrap{ grid-template-columns:1fr 1fr; gap:22.4px 0; }
+  .fact{ border-right:0; }
+  .fact:nth-child(odd){ border-right:1px solid rgba(255,255,255,.15); }
 }
 
 /* ============================================================
    TURF VARIETIES
    ============================================================ */
-.atf-lp-page .variety-grid{
+.variety-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(258px,1fr));
   gap:18px;
 }
-.atf-lp-page .v-card{
+.v-card{
   background:var(--paper-2);
   border:1px solid var(--line);
   border-radius:14px;
@@ -461,37 +446,37 @@ body{
   display:flex; flex-direction:column;
   transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
 }
-.atf-lp-page .v-card:hover{ border-color:var(--brand); transform:translateY(-4px); box-shadow:0 18px 40px rgba(22,48,31,.12); }
-.atf-lp-page .v-card .v-img{ position:relative; aspect-ratio:4/3; background:var(--tint); overflow:hidden; }
-.atf-lp-page .v-card .v-img img{ width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
-.atf-lp-page .v-card:hover .v-img img{ transform:scale(1.06); }
-.atf-lp-page .v-tag{
+.v-card:hover{ border-color:var(--brand); transform:translateY(-4px); box-shadow:0 18px 40px rgba(22,48,31,.12); }
+.v-card .v-img{ position:relative; aspect-ratio:4/3; background:var(--tint); overflow:hidden; }
+.v-card .v-img img{ width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
+.v-card:hover .v-img img{ transform:scale(1.06); }
+.v-tag{
   position:absolute; left:12px; top:12px; z-index:2;
   background:rgba(11,26,16,.82); color:#9FD3AE;
   font-family:var(--mono); font-size:10.912px; letter-spacing:.11em; text-transform:uppercase;
   padding:6.4px 9.6px; border-radius:99px;
 }
-.atf-lp-page .v-body{ padding:19.2px 20.8px 22.4px; display:flex; flex-direction:column; flex:1; }
-.atf-lp-page .v-body h3{ margin-bottom:8.8px; }
-.atf-lp-page .v-body p{ font-size:16.192px; color:var(--ink-soft); margin-bottom:16px; }
-.atf-lp-page .v-specs{ list-style:none; margin:0 0 19.2px; padding:0; display:grid; gap:6.4px; }
-.atf-lp-page .v-specs li{ display:flex; gap:8px; align-items:flex-start; font-size:15.136px; color:var(--ink-soft); }
-.atf-lp-page .v-specs svg{ flex:none; width:15px; height:15px; margin-top:4px; color:var(--brand); }
-.atf-lp-page .v-link{
+.v-body{ padding:19.2px 20.8px 22.4px; display:flex; flex-direction:column; flex:1; }
+.v-body h3{ margin-bottom:8.8px; }
+.v-body p{ font-size:16.192px; color:var(--ink-soft); margin-bottom:16px; }
+.v-specs{ list-style:none; margin:0 0 19.2px; padding:0; display:grid; gap:6.4px; }
+.v-specs li{ display:flex; gap:8px; align-items:flex-start; font-size:15.136px; color:var(--ink-soft); }
+.v-specs svg{ flex:none; width:15px; height:15px; margin-top:4px; color:var(--brand); }
+.v-link{
   margin-top:auto;
   display:inline-flex; align-items:center; gap:6.4px;
   font-family:var(--mono); font-size:13.024px; letter-spacing:.1em; text-transform:uppercase;
   font-weight:500; color:var(--brand); text-decoration:none;
 }
-.atf-lp-page .v-link:hover{ color:var(--brand-deep); text-decoration:underline; }
+.v-link:hover{ color:var(--brand-deep); text-decoration:underline; }
 
 /* ============================================================
    SERVICES
    ============================================================ */
-.atf-lp-page .svc-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.svc-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
 @media (max-width:1000px){ .svc-grid{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:640px){ .svc-grid{ grid-template-columns:1fr; } }
-.atf-lp-page .svc{
+.svc{
   background:var(--paper-2);
   border:1px solid var(--line);
   border-radius:14px;
@@ -499,145 +484,145 @@ body{
   text-align:center;
   transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
 }
-.atf-lp-page .svc:hover{ border-color:var(--brand); transform:translateY(-4px); box-shadow:0 16px 38px rgba(22,48,31,.1); }
-.atf-lp-page .svc-ico{
+.svc:hover{ border-color:var(--brand); transform:translateY(-4px); box-shadow:0 16px 38px rgba(22,48,31,.1); }
+.svc-ico{
   width:54px; height:54px; border-radius:12px;
   background:var(--tint); color:var(--brand);
   display:flex; align-items:center; justify-content:center;
   margin:0 auto 17.6px;
   transition:background .2s ease, color .2s ease;
 }
-.atf-lp-page .svc:hover .svc-ico{ background:var(--brand); color:#fff; }
-.atf-lp-page .svc-ico svg{ width:26px; height:26px; }
-.atf-lp-page .svc h3{ margin-bottom:8px; }
-.atf-lp-page .svc p{ font-size:16.192px; color:var(--ink-soft); margin:0; }
+.svc:hover .svc-ico{ background:var(--brand); color:#fff; }
+.svc-ico svg{ width:26px; height:26px; }
+.svc h3{ margin-bottom:8px; }
+.svc p{ font-size:16.192px; color:var(--ink-soft); margin:0; }
 
 /* ============================================================
    STEPS
    ============================================================ */
-.atf-lp-page .steps{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; counter-reset:step; }
-.atf-lp-page .step{
+.steps{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; counter-reset:step; }
+.step{
   background:var(--paper-2); border:1px solid var(--line); border-radius:14px;
   padding:27.2px 22.4px; position:relative;
 }
-.atf-lp-page .step .n{
+.step .n{
   font-family:var(--display); font-size:36.96px; font-weight:800; letter-spacing:-.03em;
   color:var(--brand); opacity:.28; line-height:1; display:block; margin-bottom:11.2px;
 }
-.atf-lp-page .step h3{ margin-bottom:7.2px; }
-.atf-lp-page .step p{ font-size:15.84px; color:var(--ink-soft); margin:0; }
+.step h3{ margin-bottom:7.2px; }
+.step p{ font-size:15.84px; color:var(--ink-soft); margin:0; }
 
 /* ============================================================
    GALLERY
    ============================================================ */
-.atf-lp-page .mosaic{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-.atf-lp-page .mosaic figure{ margin:0; border-radius:10px; overflow:hidden; background:var(--tint); aspect-ratio:4/3; }
-.atf-lp-page .mosaic img{ width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
-.atf-lp-page .mosaic figure:hover img{ transform:scale(1.05); }
+.mosaic{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.mosaic figure{ margin:0; border-radius:10px; overflow:hidden; background:var(--tint); aspect-ratio:4/3; }
+.mosaic img{ width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
+.mosaic figure:hover img{ transform:scale(1.05); }
 @media (max-width:900px){ .mosaic{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:520px){ .mosaic{ grid-template-columns:1fr; } }
 
 /* ============================================================
    WHY US (split)
    ============================================================ */
-.atf-lp-page .split{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(28.8px,4vw,56px); align-items:center; }
+.split{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(28.8px,4vw,56px); align-items:center; }
 @media (max-width:900px){ .split{ grid-template-columns:1fr; } }
-.atf-lp-page .split-img{ border-radius:14px; overflow:hidden; background:var(--tint); }
-.atf-lp-page .split-img img{ width:100%; height:clamp(320px,42vw,540px); object-fit:cover; }
-.atf-lp-page .why-list{ list-style:none; margin:28.8px 0 0; padding:0; display:grid; gap:19.2px; justify-items:stretch; }
-.atf-lp-page .why-list li{ display:flex; gap:16px; align-items:flex-start; justify-content:flex-start; width:100%; text-align:left; }
-.atf-lp-page .why-list li > div{ flex:1 1 auto; min-width:0; text-align:left; }
-.atf-lp-page .why-ico{
+.split-img{ border-radius:14px; overflow:hidden; background:var(--tint); }
+.split-img img{ width:100%; height:clamp(320px,42vw,540px); object-fit:cover; }
+.why-list{ list-style:none; margin:28.8px 0 0; padding:0; display:grid; gap:19.2px; justify-items:stretch; }
+.why-list li{ display:flex; gap:16px; align-items:flex-start; justify-content:flex-start; width:100%; text-align:left; }
+.why-list li > div{ flex:1 1 auto; min-width:0; text-align:left; }
+.why-ico{
   flex:none; width:44px; height:44px; border-radius:50%;
   background:var(--tint); color:var(--brand);
   display:flex; align-items:center; justify-content:center;
 }
-.atf-lp-page .why-ico svg{ width:21px; height:21px; }
-.atf-lp-page .why-list h3{ margin-bottom:4px; }
-.atf-lp-page .why-list p{ font-size:16.192px; color:var(--ink-soft); margin:0; }
+.why-ico svg{ width:21px; height:21px; }
+.why-list h3{ margin-bottom:4px; }
+.why-list p{ font-size:16.192px; color:var(--ink-soft); margin:0; }
 
 /* ============================================================
    REVIEWS
    ============================================================ */
-.atf-lp-page .reviews{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
-.atf-lp-page .review{
+.reviews{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
+.review{
   background:var(--paper-2); border:1px solid var(--line); border-radius:14px;
   padding:25.6px 24px; display:flex; flex-direction:column;
 }
-.atf-lp-page .review .stars{ margin-bottom:14.4px; }
-.atf-lp-page .review p{ font-size:16.72px; color:var(--ink-soft); margin-bottom:19.2px; }
-.atf-lp-page .review .who{ margin-top:auto; font-weight:600; font-size:16.192px; }
-.atf-lp-page .review .src{ font-family:var(--mono); font-size:11.616px; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-faint); margin-top:3.2px; }
+.review .stars{ margin-bottom:14.4px; }
+.review p{ font-size:16.72px; color:var(--ink-soft); margin-bottom:19.2px; }
+.review .who{ margin-top:auto; font-weight:600; font-size:16.192px; }
+.review .src{ font-family:var(--mono); font-size:11.616px; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-faint); margin-top:3.2px; }
 
 /* ============================================================
    CONTACT (contact info + map + form)
    ============================================================ */
-.atf-lp-page #contact{ background:var(--brand-deep); }
-.atf-lp-page #contact h2{ color:#fff; }
-.atf-lp-page #contact .eyebrow{ color:#9FD3AE; }
-.atf-lp-page #contact .head-p{ color:#DCEBE0; }
+#contact{ background:var(--brand-deep); }
+#contact h2{ color:#fff; }
+#contact .eyebrow{ color:#9FD3AE; }
+#contact .head-p{ color:#DCEBE0; }
 
-.atf-lp-page .contact-grid{
+.contact-grid{
   display:grid; grid-template-columns:1.05fr .95fr;
   gap:clamp(19.2px,2.4vw,28.8px);
   align-items:start;
 }
 @media (max-width:900px){ .contact-grid{ grid-template-columns:1fr; } }
 
-.atf-lp-page .contact-side{ display:flex; flex-direction:column; gap:10px; }
-.atf-lp-page .crow{
+.contact-side{ display:flex; flex-direction:column; gap:10px; }
+.crow{
   display:flex; align-items:center; gap:14px; text-decoration:none;
   background:var(--paper-2); border:1px solid var(--line); border-radius:12px;
   padding:16.8px 19.2px;
   transition:transform .2s ease, border-color .2s ease;
 }
-.atf-lp-page .crow:hover{ transform:translateY(-2px); border-color:var(--brand); }
-.atf-lp-page .crow-ico{
+.crow:hover{ transform:translateY(-2px); border-color:var(--brand); }
+.crow-ico{
   flex:none; width:44px; height:44px; border-radius:50%;
   background:var(--tint); color:var(--brand);
   display:flex; align-items:center; justify-content:center;
   transition:background .2s ease, color .2s ease;
 }
-.atf-lp-page .crow:hover .crow-ico{ background:var(--brand); color:#fff; }
-.atf-lp-page .crow-ico svg{ width:20px; height:20px; }
-.atf-lp-page .crow-k{ display:block; font-family:var(--mono); font-size:11.088px; letter-spacing:.13em; text-transform:uppercase; color:var(--brand); }
-.atf-lp-page .crow-v{ display:block; font-size:17.6px; font-weight:500; margin-top:2.4px; }
-.atf-lp-page .map{ border:0; width:100%; height:300px; border-radius:12px; margin-top:4px; }
+.crow:hover .crow-ico{ background:var(--brand); color:#fff; }
+.crow-ico svg{ width:20px; height:20px; }
+.crow-k{ display:block; font-family:var(--mono); font-size:11.088px; letter-spacing:.13em; text-transform:uppercase; color:var(--brand); }
+.crow-v{ display:block; font-size:17.6px; font-weight:500; margin-top:2.4px; }
+.map{ border:0; width:100%; height:300px; border-radius:12px; margin-top:4px; }
 
-.atf-lp-page .form-card{
+.form-card{
   background:var(--paper-2); border:1px solid var(--line); border-radius:14px;
   padding:clamp(24px,3vw,35.2px);
 }
-.atf-lp-page .form-card h3{ font-family:var(--display); font-weight:800; font-size:26.4px; margin-bottom:6.4px; }
-.atf-lp-page .form-card .fc-sub{ font-size:16.192px; color:var(--ink-soft); margin-bottom:22.4px; }
+.form-card h3{ font-family:var(--display); font-weight:800; font-size:26.4px; margin-bottom:6.4px; }
+.form-card .fc-sub{ font-size:16.192px; color:var(--ink-soft); margin-bottom:22.4px; }
 
 /* ============================================================
    STICKY MOBILE CALL BAR
    ============================================================ */
-.atf-lp-page .callbar{ display:none; }
+.callbar{ display:none; }
 @media (max-width:760px){
-  .atf-lp-page .callbar{
+  .callbar{
     display:flex; position:fixed; left:0; right:0; bottom:0; z-index:90;
     background:var(--brand); box-shadow:0 -6px 20px rgba(0,0,0,.18);
   }
-  .atf-lp-page .callbar a{
+  .callbar a{
     flex:1; text-align:center; padding:16px 9.6px;
     color:#fff; text-decoration:none; font-weight:700; font-size:16.72px;
     display:flex; align-items:center; justify-content:center; gap:7.2px;
   }
-  .atf-lp-page .callbar a svg{ width:18px; height:18px; }
-  .atf-lp-page .callbar a + a{ border-left:1px solid rgba(255,255,255,.28); background:var(--brand-deep); }
+  .callbar a svg{ width:18px; height:18px; }
+  .callbar a + a{ border-left:1px solid rgba(255,255,255,.28); background:var(--brand-deep); }
   body{ padding-bottom:60px; }
 }
 
 /* ---------- Reveal on scroll ---------- */
-.atf-lp-page .rv{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
-.atf-lp-page .rv.in{ opacity:1; transform:none; }
+.rv{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+.rv.in{ opacity:1; transform:none; }
 
 @media (prefers-reduced-motion:reduce){
-  .atf-lp-page *{ animation:none !important; transition:none !important; }
+  *{ animation:none !important; transition:none !important; }
   html{ scroll-behavior:auto; }
-  .atf-lp-page .rv{ opacity:1; transform:none; }
+  .rv{ opacity:1; transform:none; }
 }
 
 /* ============================================================
@@ -646,45 +631,34 @@ body{
    Build your CF7 form with the same .f2 / .frow wrappers used by
    the fallback form and these few rules do the rest.
    ============================================================ */
-.atf-lp-page .lead-card .wpcf7 form.wpcf7-form,
-,
-.atf-lp-page .form-card .wpcf7 form.wpcf7-form{ margin:0; }
-.atf-lp-page .lead-card .frow p,
-,
-.atf-lp-page .form-card .frow p,
-,
-.atf-lp-page .lead-card .wpcf7-form > p,
-,
-.atf-lp-page .form-card .wpcf7-form > p{ margin:0; }
+.lead-card .wpcf7 form.wpcf7-form,
+.form-card .wpcf7 form.wpcf7-form{ margin:0; }
+.lead-card .frow p,
+.form-card .frow p,
+.lead-card .wpcf7-form > p,
+.form-card .wpcf7-form > p{ margin:0; }
 /* CF7 runs the form content through autop, which drops a <br> after every
    row and, fatally, between the submit and its arrow span, stacking them. */
-.atf-lp-page .lead-card .wpcf7-form br,
-,
-.atf-lp-page .form-card .wpcf7-form br{ display:none; }
-.atf-lp-page .cf7-submit p{ display:contents; margin:0; }
-.atf-lp-page .lead-card .wpcf7-form-control-wrap,
-,
-.atf-lp-page .form-card .wpcf7-form-control-wrap{ display:block; }
-.atf-lp-page .lead-card .wpcf7-not-valid-tip,
-,
-.atf-lp-page .form-card .wpcf7-not-valid-tip{ font-size:12.672px; color:#B3261E; margin-top:4.8px; display:block; }
-.atf-lp-page .lead-card .wpcf7-form-control.wpcf7-not-valid,
-,
-.atf-lp-page .form-card .wpcf7-form-control.wpcf7-not-valid{ border-color:#B3261E; background:#FDF4F3; }
-.atf-lp-page .lead-card .wpcf7 .wpcf7-response-output,
-,
-.atf-lp-page .form-card .wpcf7 .wpcf7-response-output{
+.lead-card .wpcf7-form br,
+.form-card .wpcf7-form br{ display:none; }
+.cf7-submit p{ display:contents; margin:0; }
+.lead-card .wpcf7-form-control-wrap,
+.form-card .wpcf7-form-control-wrap{ display:block; }
+.lead-card .wpcf7-not-valid-tip,
+.form-card .wpcf7-not-valid-tip{ font-size:12.672px; color:#B3261E; margin-top:4.8px; display:block; }
+.lead-card .wpcf7-form-control.wpcf7-not-valid,
+.form-card .wpcf7-form-control.wpcf7-not-valid{ border-color:#B3261E; background:#FDF4F3; }
+.lead-card .wpcf7 .wpcf7-response-output,
+.form-card .wpcf7 .wpcf7-response-output{
   margin:16px 0 0; padding:11.2px 14.4px; border-radius:8px;
   font-size:13.728px; border-width:1px;
 }
-.atf-lp-page .lead-card .wpcf7-spinner,
-,
-.atf-lp-page .form-card .wpcf7-spinner{ margin:9.6px auto 0; display:block; }
+.lead-card .wpcf7-spinner,
+.form-card .wpcf7-spinner{ margin:9.6px auto 0; display:block; }
 /* CF7 renders the submit as an <input>, which cannot hold the arrow span.
    Keep the fill, the glow and the lift; the arrow is dropped on these. */
-.atf-lp-page .lead-card input.wpcf7-submit,
-,
-.atf-lp-page .form-card input.wpcf7-submit{
+.lead-card input.wpcf7-submit,
+.form-card input.wpcf7-submit{
   width:100%; justify-content:center;
   padding:21.12px 33.6px;
   border:0; border-radius:var(--r);
@@ -694,9 +668,8 @@ body{
   animation:atfGlow 4.2s ease-in-out infinite;
   transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
 }
-.atf-lp-page .lead-card input.wpcf7-submit:hover,
-,
-.atf-lp-page .form-card input.wpcf7-submit:hover{
+.lead-card input.wpcf7-submit:hover,
+.form-card input.wpcf7-submit:hover{
   background:var(--brand-deep); transform:translateY(-2px); animation:none;
   box-shadow:
     0 0 26px -2px rgba(122,199,140,.75),
@@ -709,12 +682,10 @@ body{
    fields cannot carry id: attributes; duplicate ids would make a label
    in the contact form focus the hero field. Wrapping the control inside
    its <label> associates them implicitly, with no ids at all. */
-.atf-lp-page .lead-card .frow label,
-,
-.atf-lp-page .form-card .frow label{ margin-bottom:0; font-weight:600; }
-.atf-lp-page .lead-card .frow label .wpcf7-form-control-wrap,
-,
-.atf-lp-page .form-card .frow label .wpcf7-form-control-wrap{ display:block; margin-top:5.6px; font-weight:400; }
+.lead-card .frow label,
+.form-card .frow label{ margin-bottom:0; font-weight:600; }
+.lead-card .frow label .wpcf7-form-control-wrap,
+.form-card .frow label .wpcf7-form-control-wrap{ display:block; margin-top:5.6px; font-weight:400; }
 
 /* ---------- CF7 submit ----------
    CF7 renders the submit as an <input>, and an <input> renders no
@@ -723,7 +694,7 @@ body{
    vanish. The wrapper becomes the button instead: it carries the fill,
    the glow, the retract and the arrow, and the input sits inside as
    nothing but the label text. */
-.atf-lp-page .cf7-submit{
+.cf7-submit{
   position:relative; isolation:isolate; overflow:hidden;
   display:flex; align-items:center; justify-content:space-between; gap:14px;
   width:100%; margin-top:6.4px;
@@ -738,7 +709,7 @@ body{
   animation:atfGlow 4.2s ease-in-out infinite;
   transition:transform .25s ease, box-shadow .25s ease;
 }
-.atf-lp-page .cf7-submit::before{
+.cf7-submit::before{
   content:""; position:absolute; z-index:-1;
   top:-2px; right:-2px; bottom:-2px; left:-2px;
   background:var(--brand); border-radius:calc(var(--r) + 2px);
@@ -746,27 +717,24 @@ body{
              right .5s cubic-bezier(.65,.05,.25,1), bottom .5s cubic-bezier(.65,.05,.25,1),
              border-radius .5s cubic-bezier(.65,.05,.25,1);
 }
-.atf-lp-page .cf7-submit:hover,
-,
-.atf-lp-page .cf7-submit:focus-within{
+.cf7-submit:hover,
+.cf7-submit:focus-within{
   transform:translateY(-2px); animation:none;
   box-shadow:
     0 0 26px -2px rgba(122,199,140,.75),
     0 0 56px -4px rgba(44,110,63,.60),
     0 18px 38px -14px rgba(27,68,40,.95);
 }
-.atf-lp-page .cf7-submit:hover::before,
-,
-.atf-lp-page .cf7-submit:focus-within::before{
+.cf7-submit:hover::before,
+.cf7-submit:focus-within::before{
   /* 46px square centred on the arrow, whatever height the button ends up:
      deriving it from the padding made it an ellipse as soon as the label wrapped */
   left:calc(100% - 55.5px); right:9.5px;
   top:calc(50% - 23px); bottom:calc(50% - 23px);
   border-radius:50%;
 }
-.atf-lp-page .lead-card .cf7-submit input.wpcf7-submit,
-,
-.atf-lp-page .form-card .cf7-submit input.wpcf7-submit{
+.lead-card .cf7-submit input.wpcf7-submit,
+.form-card .cf7-submit input.wpcf7-submit{
   flex:0 1 auto; width:auto;
   background:none; border:0; padding:0; margin:0;
   box-shadow:none; animation:none;
@@ -775,29 +743,25 @@ body{
   color:#fff; text-align:left; cursor:pointer;
   transition:color .35s ease;
 }
-.atf-lp-page .lead-card .cf7-submit:hover input.wpcf7-submit,
-,
-.atf-lp-page .form-card .cf7-submit:hover input.wpcf7-submit{
+.lead-card .cf7-submit:hover input.wpcf7-submit,
+.form-card .cf7-submit:hover input.wpcf7-submit{
   color:var(--brand); background:none; transform:none;
 }
-.atf-lp-page .cf7-submit:hover .btn-arrow svg{ transform:translateX(2px); }
-.atf-lp-page .lead-card .cf7-submit .wpcf7-spinner,
-,
-.atf-lp-page .form-card .cf7-submit .wpcf7-spinner{
+.cf7-submit:hover .btn-arrow svg{ transform:translateX(2px); }
+.lead-card .cf7-submit .wpcf7-spinner,
+.form-card .cf7-submit .wpcf7-spinner{
   position:absolute; right:64px; top:50%; transform:translateY(-50%); margin:0;
 }
 @media (max-width:560px){
-  .atf-lp-page .cf7-submit{ padding:8.5px 8.5px 8.5px 23.5px; }
-  .atf-lp-page .cf7-submit:hover::before,
-,
-  .atf-lp-page .cf7-submit:focus-within::before{
+  .cf7-submit{ padding:8.5px 8.5px 8.5px 23.5px; }
+  .cf7-submit:hover::before,
+  .cf7-submit:focus-within::before{
     left:calc(100% - 48.5px); right:8.5px;
     top:calc(50% - 20px); bottom:calc(50% - 20px);
   }
-  .atf-lp-page .lead-card .cf7-submit input.wpcf7-submit,
-,
-  .atf-lp-page .form-card .cf7-submit input.wpcf7-submit{ font-size:16.192px; }
-  .atf-lp-page .cf7-submit .btn-arrow{ width:40px; height:40px; }
+  .lead-card .cf7-submit input.wpcf7-submit,
+  .form-card .cf7-submit input.wpcf7-submit{ font-size:16.192px; }
+  .cf7-submit .btn-arrow{ width:40px; height:40px; }
 }
 
 /* ============================================================
@@ -809,8 +773,7 @@ body{
    without outranking the landing page's own section styles.
 
    Colour and paragraph rules use :where(), which contributes zero
-   .atf-lp-page specificity,
- .atf-lp-page so `.hero h1{ color:#fff }` and friends still win.
+   specificity, so `.hero h1 { color:#fff }` and friends still win.
    Getting this wrong turns the hero heading dark on a dark image.
    ============================================================ */
 
@@ -823,38 +786,18 @@ body{
 body.atf-lp{ background:var(--paper); }
 
 /* the child theme's `body h1` outranks a bare `h1`, so match its weight */
-.atf-lp-page h1,
- .atf-lp-page h2,
- .atf-lp-page h3,
- .atf-lp-page h4{ font-family:var(--display); }
-.atf-lp-page a,
- .atf-lp-page p,
- .atf-lp-page li,
- .atf-lp-page label,
-,
-.atf-lp-page input,
- .atf-lp-page select,
- .atf-lp-page textarea,
- .atf-lp-page button{ font-family:var(--body); }
-.atf-lp-page .eyebrow,
- .atf-lp-page .sub,
- .atf-lp-page .crow-k,
-,
-.atf-lp-page .v-tag,
- .atf-lp-page .v-link,
- .atf-lp-page .review .src,
-,
+.atf-lp-page h1, .atf-lp-page h2, .atf-lp-page h3, .atf-lp-page h4{ font-family:var(--display); }
+.atf-lp-page a, .atf-lp-page p, .atf-lp-page li, .atf-lp-page label,
+.atf-lp-page input, .atf-lp-page select, .atf-lp-page textarea, .atf-lp-page button{ font-family:var(--body); }
+.atf-lp-page .eyebrow, .atf-lp-page .sub, .atf-lp-page .crow-k,
+.atf-lp-page .v-tag, .atf-lp-page .v-link, .atf-lp-page .review .src,
 .atf-lp-page .lc-top .sub{ font-family:var(--mono); }
 
 /* zero-specificity defaults: they beat the theme, and lose to everything of ours */
-:where(.atf-lp-page) h1,
- :where(.atf-lp-page) h2,
-,
-:where(.atf-lp-page) h3,
- :where(.atf-lp-page) h4{ color:var(--ink); margin:0; }
+:where(.atf-lp-page) h1, :where(.atf-lp-page) h2,
+:where(.atf-lp-page) h3, :where(.atf-lp-page) h4{ color:var(--ink); margin:0; }
 :where(.atf-lp-page) p{ color:inherit; font-size:inherit; line-height:inherit; margin:0 0 16px; }
-:where(.atf-lp-page) ul,
- :where(.atf-lp-page) ol{ margin:0; padding:0; list-style:none; }
+:where(.atf-lp-page) ul, :where(.atf-lp-page) ol{ margin:0; padding:0; list-style:none; }
 :where(.atf-lp-page) li{ font-size:inherit; line-height:inherit; color:inherit; }
 :where(.atf-lp-page) a{ color:inherit; text-decoration:none; }
 :where(.atf-lp-page) figure{ margin:0; }
@@ -864,9 +807,7 @@ body.atf-lp{ background:var(--paper); }
    width-limited. Our sections run full bleed and handle their own gutters.
    Scoped to #content so the header and footer keep their own containers. */
 body.atf-lp #content,
-,
 body.atf-lp #content > .corp-container,
-,
 body.atf-lp #content .site-content{
   max-width:none; width:auto; margin:0; padding:0;
 }
@@ -878,8 +819,8 @@ body.atf-lp #content .site-content{
    homepage build, which uses these same class names. Two of its rules
    outrank this page's:
 
-     .atf-lp-page .hero-cta .btn{ justify-content:center; ... }   (0,2,0)
-     .atf-lp-page .btn-primary{ color:#fff !important }
+     .hero-cta .btn { justify-content:center; ... }   (0,2,0)
+     .btn-primary   { color:#fff !important }
 
    The first centred the banner CTA's label and arrow while the fill
    still collapsed to the right edge, so the arrow sat off the circle.
@@ -896,21 +837,11 @@ body.atf-lp #content .site-content{
   font-size:18.656px;
   letter-spacing:.01em;
 }
-.atf-lp-page /* .btn-primary:hover{ background:var(--ink); } in the child theme is
-   (0,2,0), which outranks this page's base .btn-primary (0,1,0), so the
-   pill revealed under the retracting fill came back dark green instead
-   of white and the green label was unreadable on it. */
-.atf-lp-page .btn-primary{
-  background:#fff;
-}
 .atf-lp-page .btn-primary:hover,
-,
 .atf-lp-page .btn-primary:focus-visible{
-  background:#fff;
   color:var(--brand) !important;
 }
 .atf-lp-page .hero-cta .btn-primary:hover,
-,
 .atf-lp-page .hero-cta .btn-primary:focus-visible{
   transform:translateY(-2px);
   box-shadow:
