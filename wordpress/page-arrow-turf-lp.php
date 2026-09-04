@@ -882,9 +882,66 @@ body.atf-lp #content .site-content{
 }
 .atf-lp-page .hf-note a{ color:var(--brand); font-weight:600; text-decoration:none; }
 .atf-lp-page .hf-note a:hover{ text-decoration:underline; }
+
+/* ============================================================
+   ADDITIONAL CSS (Customiser) COLLISIONS
+
+   The site's Additional CSS carries a block written for the inner
+   pages that this landing page matches by accident, because it is
+   body:not(.home) and its contact section is #contact:
+
+     body:not(.home) #contact .form-card p     { margin:0 0 16px !important }
+     body:not(.home) #contact .form-card label { line-height:36px !important }
+
+   CF7 wraps every row in a <p>, so that margin stacked on top of
+   .frow's own 13.6px and left a large gap between every field. The
+   36px line-height did the same above each input.
+
+   Those selectors are (1,2,2). These are (1,3,1), which outranks them.
+   ============================================================ */
+.atf-lp-page #contact .form-card .wpcf7-form p,
+.atf-lp-page #contact .lead-card .wpcf7-form p,
+.atf-lp-page #contact .form-card .wpcf7-form br{
+  margin:0 !important;
+}
+.atf-lp-page #contact .form-card .frow label,
+.atf-lp-page #contact .form-card .wpcf7-form label{
+  line-height:1.3 !important;
+  margin-bottom:0 !important;
+}
+.atf-lp-page #contact .form-card .frow label .wpcf7-form-control-wrap{
+  margin-top:5.6px !important;
+}
+/* and the same for the hero card, which sits outside #contact */
+.atf-lp-page .lead-card .wpcf7-form p{ margin:0 !important; }
+.atf-lp-page .lead-card .wpcf7-form label{ line-height:1.3 !important; margin-bottom:0 !important; }
+
+/* Their block also pins the contact form's type smaller than the hero's,
+   and hits the submit with padding:19.2px 88px. That selector is
+   body:not(.home) #contact .form-card .wpcf7-submit = (1,3,1) !important,
+   so the override below is (1,4,1) to clear it. */
+.atf-lp-page #contact .form-card .frow label,
+.atf-lp-page #contact .form-card .wpcf7-form label{
+  font-size:13.728px !important;
+}
+.atf-lp-page #contact .form-card .wpcf7-form input:not([type=submit]),
+.atf-lp-page #contact .form-card .wpcf7-form select,
+.atf-lp-page #contact .form-card .wpcf7-form textarea{
+  font-size:17.6px !important;
+  padding:12.8px 14.4px !important;
+}
+.atf-lp-page #contact .form-card .cf7-submit input.wpcf7-submit,
+.atf-lp-page #contact .form-card .cf7-submit input[type=submit]{
+  font-size:18.656px !important;
+  line-height:1.2 !important;
+  padding:0 !important;
+  border-radius:0 !important;
+  background:none !important;
+  width:auto !important;
+}
 </style>
 	<?php
-}, 99 );
+}, 999 ); /* after wp_custom_css_cb, which WordPress hooks at 101 */
 
 get_header();
 ?>
